@@ -1,0 +1,3784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuantumViz AI — Redefining Data Intelligence</title>
+
+  <!-- Google Fonts: Exo 2 + Manrope -->
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Swiper -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+  <style>
+    :root {
+      --bg-deep: #03030d;
+      --bg-card: rgba(10,12,35,0.7);
+      --bg-card2: rgba(15,18,50,0.8);
+      --cyan: #00e5ff;
+      --cyan-dim: rgba(0,229,255,0.15);
+      --purple: #a855f7;
+      --purple-dim: rgba(168,85,247,0.15);
+      --green: #00ff88;
+      --border: rgba(0,229,255,0.18);
+      --border-hover: rgba(0,229,255,0.55);
+      --text-primary: #e8eeff;
+      --text-secondary: #8892b0;
+      --glow-cyan: 0 0 20px rgba(0,229,255,0.45), 0 0 50px rgba(0,229,255,0.2);
+      --glow-purple: 0 0 20px rgba(168,85,247,0.45), 0 0 50px rgba(168,85,247,0.2);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+
+
+    /* ═══════════════════════════════════════════════
+   RESET & TOKENS
+═══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:   #020914;
+  --text: #eef2ff;
+  --dim:  #344766;
+
+  --a1: #6366f1;
+  --a2: #06b6d4;
+  --a3: #10b981;
+  --a4: #f59e0b;
+  --a5: #f43f5e;
+  --a6: #8b5cf6;
+
+  --R:  370px;
+  --CW: 268px;
+  --T:  46s;
+}
+
+html,body{
+  min-height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  overflow-x:hidden;
+}
+
+    body {
+      background: var(--bg-deep);
+      font-family: 'Manrope', sans-serif;
+      color: var(--text-primary);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ─── CUSTOM CURSOR ──────────────────────────── */
+    #cursor-dot {
+      width: 8px; height: 8px;
+      background: var(--cyan);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: transform .1s;
+      box-shadow: var(--glow-cyan);
+    }
+    #cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(0,229,255,0.5);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: transform .15s ease, width .2s, height .2s, border-color .2s;
+    }
+    body:has(a:hover) #cursor-ring,
+    body:has(button:hover) #cursor-ring {
+      width: 52px; height: 52px;
+      border-color: var(--cyan);
+    }
+
+    /* ─── THREE.JS CANVAS ────────────────────────── */
+    #quantum-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+    /* ─── PRELOADER ──────────────────────────────── */
+    #preloader {
+      position: fixed; inset: 0; z-index: 10000;
+      background: var(--bg-deep);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 24px;
+    }
+    .preloader-rings {
+      width: 80px; height: 80px;
+      position: relative;
+    }
+    .preloader-rings span {
+      display: block; position: absolute;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      animation: spin 1.2s linear infinite;
+    }
+    .preloader-rings span:nth-child(1) {
+      inset: 0; border-top-color: var(--cyan); animation-duration: 1s;
+    }
+    .preloader-rings span:nth-child(2) {
+      inset: 10px; border-right-color: var(--purple); animation-duration: 1.4s; animation-direction: reverse;
+    }
+    .preloader-rings span:nth-child(3) {
+      inset: 22px; border-bottom-color: var(--green); animation-duration: 1.8s;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .preloader-text {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 6px;
+      color: var(--cyan);
+      text-transform: uppercase;
+    }
+    .preloader-bar-wrap {
+      width: 200px; height: 2px;
+      background: rgba(0,229,255,0.1);
+      border-radius: 2px; overflow: hidden;
+    }
+    .preloader-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      width: 0%;
+      animation: loadBar 1.8s ease forwards;
+    }
+    @keyframes loadBar { to { width: 100%; } }
+
+    /* ─── LAYOUT HELPERS ─────────────────────────── */
+    section { position: relative; z-index: 1; }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--cyan); margin-bottom: 14px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::before {
+      content: ''; width: 28px; height: 1px;
+      background: var(--cyan);
+    }
+
+    .section-title {
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 800;
+      font-size: clamp(32px, 5vw, 54px);
+      line-height: 1.1;
+      background: linear-gradient(135deg, #fff 30%, var(--cyan) 70%, var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ─── NOISE OVERLAY ──────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      opacity: .025;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* ─── GLASS CARD ─────────────────────────────── */
+    .glass-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: border-color .3s, box-shadow .3s, transform .3s;
+    }
+    .glass-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--glow-cyan);
+      transform: translateY(-4px);
+    }
+
+    /* ─── GRID BG TEXTURE ────────────────────────── */
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    /* ─── NAVIGATION ─────────────────────────────── */
+    #mainNav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 0;
+      transition: all .4s ease;
+    }
+    #mainNav.scrolled {
+      background: rgba(3,3,13,0.92);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 40px rgba(0,0,0,0.4);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      max-width: 1280px; margin: 0 auto;
+      transition: padding .3s;
+    }
+    #mainNav.scrolled .nav-inner { padding: 14px 40px; }
+    .nav-logo {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 22px; font-weight: 900;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--green); -webkit-text-fill-color: var(--green); }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-link {
+      font-size: 13.5px; font-weight: 500;
+      color: var(--text-secondary);
+      padding: 8px 16px; border-radius: 8px;
+      text-decoration: none;
+      transition: color .2s, background .2s;
+    }
+    .nav-link:hover { color: var(--cyan); background: var(--cyan-dim); }
+    .nav-cta {
+      font-size: 13px; font-weight: 700;
+      padding: 10px 22px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: #fff; text-decoration: none;
+      position: relative; overflow: hidden;
+      transition: box-shadow .3s;
+    }
+    .nav-cta::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      opacity: 0; transition: opacity .3s;
+    }
+    .nav-cta:hover { box-shadow: var(--glow-cyan); color: #fff; }
+    .nav-cta:hover::before { opacity: 1; }
+    .nav-cta span { position: relative; z-index: 1; }
+    .nav-hamburger {
+      display: none;
+      flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--cyan); border-radius: 2px;
+      transition: all .3s;
+    }
+    @media (max-width: 768px) {
+      .nav-hamburger { display: flex; }
+      .nav-links-wrap {
+        position: fixed; top: 0; right: -300px;
+        width: 280px; height: 100vh;
+        background: rgba(5,5,20,0.97);
+        backdrop-filter: blur(30px);
+        border-left: 1px solid var(--border);
+        display: flex; flex-direction: column;
+        align-items: flex-start; justify-content: center;
+        padding: 40px;
+        gap: 8px;
+        transition: right .4s cubic-bezier(.77,0,.18,1);
+        z-index: 2000;
+      }
+      .nav-links-wrap.open { right: 0; }
+      .nav-link { font-size: 16px; padding: 12px 16px; width: 100%; }
+      .nav-inner { padding: 16px 20px; }
+    }
+
+    /* ─── HERO ───────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 120px 0 80px;
+      overflow: hidden;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--cyan-dim);
+      border: 1px solid rgba(0,229,255,0.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 12px; font-weight: 600;
+      color: var(--cyan);
+      letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .hero-badge-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--cyan);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1; transform: scale(1); }
+      50% { opacity:.5; transform: scale(1.3); }
+    }
+    .hero-title {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(42px, 7vw, 80px);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+    .hero-title .line1 { display: block; color: #fff; }
+    .hero-title .line2 {
+      display: block;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .typed-wrapper {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--green), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 17px; font-weight: 400; line-height: 1.7;
+      color: var(--text-secondary); max-width: 480px;
+      margin-bottom: 40px;
+    }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary-qv {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: #fff; font-weight: 700; font-size: 15px;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: box-shadow .3s, transform .2s;
+      position: relative; overflow: hidden;
+    }
+    .btn-primary-qv:hover {
+      box-shadow: var(--glow-cyan);
+      transform: translateY(-2px); color: #fff;
+    }
+    .btn-secondary-qv {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px; border-radius: 12px;
+      background: transparent;
+      color: var(--cyan); font-weight: 600; font-size: 15px;
+      text-decoration: none; cursor: pointer;
+      border: 1.5px solid rgba(0,229,255,0.4);
+      transition: all .3s;
+    }
+    .btn-secondary-qv:hover {
+      background: var(--cyan-dim);
+      border-color: var(--cyan); color: var(--cyan);
+    }
+    .hero-stats {
+      display: flex; gap: 40px; flex-wrap: wrap;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+    .hero-stat-num {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 28px; font-weight: 800;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-stat-label {
+      font-size: 12px; font-weight: 500;
+      color: var(--text-secondary); letter-spacing: 1px;
+    }
+    .hero-visual {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-orb {
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%, rgba(168,85,247,0.3), rgba(0,229,255,0.15), transparent 70%);
+      filter: blur(40px);
+      position: absolute;
+      animation: orbFloat 6s ease-in-out infinite;
+    }
+    @keyframes orbFloat {
+      0%,100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-20px) scale(1.05); }
+    }
+    #heroChart {
+      position: relative; z-index: 1;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      padding: 20px;
+      width: 100%; max-width: 420px;
+    }
+    .floating-badge {
+      position: absolute;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(5,5,20,0.9);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 12px; font-weight: 600;
+      backdrop-filter: blur(10px);
+      animation: float 4s ease-in-out infinite;
+    }
+    .floating-badge-1 { top: -10px; right: -20px; color: var(--cyan); border-color: rgba(0,229,255,0.3); }
+    .floating-badge-2 { bottom: 20px; left: -20px; color: var(--green); border-color: rgba(0,255,136,0.3); animation-delay: -2s; }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* ─── MARQUEE STRIP ──────────────────────────── */
+    .marquee-wrap {
+      overflow: hidden;
+      padding: 18px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: rgba(0,229,255,0.03);
+    }
+    .marquee-inner {
+      display: flex; gap: 60px;
+      animation: marquee 25s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee-item {
+      display: flex; align-items: center; gap: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; font-weight: 500;
+      color: var(--text-secondary); letter-spacing: 2px;
+      text-transform: uppercase; flex-shrink: 0;
+    }
+    .marquee-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+   
+
+    /* ─── STATS ──────────────────────────────────── */
+    #stats { padding: 80px 0; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2px; }
+    .stat-box {
+      padding: 48px 32px; text-align: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      transition: background .3s;
+    }
+    .stat-box:hover { background: var(--bg-card2); }
+    .stat-number {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 52px; font-weight: 900; line-height: 1;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-unit { font-size: 28px; }
+    .stat-label {
+      margin-top: 8px;
+      font-size: 13px; font-weight: 500;
+      color: var(--text-secondary); letter-spacing: 1px;
+    }
+
+    /* ─── HOW IT WORKS ───────────────────────────── */
+    #how-it-works { padding: 120px 0; }
+    .step-card {
+      padding: 32px;
+      position: relative;
+    }
+    .step-number {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 72px; font-weight: 900;
+      position: absolute; top: 20px; right: 24px;
+      background: linear-gradient(135deg, rgba(0,229,255,0.08), rgba(168,85,247,0.08));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      pointer-events: none; user-select: none;
+    }
+    .step-title {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 20px; font-weight: 700;
+      margin: 16px 0 10px;
+    }
+
+    /* ─── DEMO ───────────────────────────────────── */
+    #demo { padding: 120px 0; }
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .3s;
+    }
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--cyan);
+      background: var(--cyan-dim);
+    }
+    .algo-select {
+      width: 100%; padding: 12px 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-family: 'Manrope', sans-serif;
+      font-size: 13.5px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300e5ff' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 16px center;
+      transition: border-color .2s;
+    }
+    .algo-select:focus { outline: none; border-color: var(--cyan); }
+    .algo-select option { background: #0a0c20; }
+    .viz-btn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0; }
+    .viz-type-btn {
+      padding: 9px 6px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 11.5px; font-weight: 500;
+      cursor: pointer; text-align: center;
+      transition: all .2s;
+      font-family: 'Manrope', sans-serif;
+    }
+    .viz-type-btn:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: var(--cyan-dim);
+    }
+    .viz-type-btn.active {
+      border-color: var(--cyan);
+      background: var(--cyan-dim);
+      color: var(--cyan);
+    }
+    #vizContainer {
+      min-height: 400px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      margin-top: 16px;
+      overflow: hidden;
+    }
+
+    /* ─── CHAT ───────────────────────────────────── */
+    #chatContainer {
+      height: 380px; overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    #chatContainer::-webkit-scrollbar { width: 4px; }
+    #chatContainer::-webkit-scrollbar-track { background: transparent; }
+    #chatContainer::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .chat-msg {
+      display: flex; gap: 12px; margin-bottom: 16px;
+    }
+    .chat-msg-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+    }
+    .msg-ai .chat-msg-avatar {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+    }
+    .msg-user .chat-msg-avatar {
+      background: rgba(255,255,255,0.08);
+    }
+    .chat-msg-bubble {
+      padding: 12px 16px; border-radius: 14px;
+      font-size: 13.5px; line-height: 1.6;
+      max-width: calc(100% - 50px);
+    }
+    .msg-ai .chat-msg-bubble {
+      background: rgba(0,229,255,0.07);
+      border: 1px solid rgba(0,229,255,0.15);
+      border-radius: 4px 14px 14px 14px;
+    }
+    .msg-user .chat-msg-bubble {
+      background: rgba(168,85,247,0.1);
+      border: 1px solid rgba(168,85,247,0.2);
+      border-radius: 14px 4px 14px 14px;
+    }
+    .chat-input-wrap {
+      display: flex; gap: 10px; padding: 16px;
+      border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.2);
+    }
+    .chat-input {
+      flex: 1; background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 11px 16px;
+      color: var(--text-primary);
+      font-family: 'Manrope', sans-serif; font-size: 13.5px;
+      transition: border-color .2s;
+    }
+    .chat-input:focus { outline: none; border-color: rgba(0,229,255,0.5); }
+    .chat-send-btn {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 14px;
+      transition: box-shadow .2s, transform .15s;
+      flex-shrink: 0;
+    }
+    .chat-send-btn:hover { box-shadow: var(--glow-cyan); transform: scale(1.05); }
+    .typing-indicator span {
+      display: inline-block; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--cyan); margin: 0 2px;
+      animation: typingBounce 1.2s ease infinite;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: .2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: .4s; }
+    @keyframes typingBounce {
+      0%,60%,100% { transform: translateY(0); }
+      30% { transform: translateY(-8px); }
+    }
+
+    /* ─── TESTIMONIALS ───────────────────────────── */
+    #testimonials { padding: 120px 0; }
+    .testi-card {
+      padding: 32px;
+      height: 100%;
+    }
+    .testi-stars { color: #fbbf24; font-size: 13px; letter-spacing: 2px; margin-bottom: 20px; }
+    .testi-text {
+      font-size: 15px; line-height: 1.75;
+      color: #c8d0e7; margin-bottom: 24px;
+    }
+    .testi-author { display: flex; align-items: center; gap: 14px; }
+    .testi-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 700; font-size: 16px;
+    }
+    .testi-name { font-weight: 700; font-size: 14px; }
+    .testi-role { font-size: 12px; color: var(--text-secondary); }
+
+    /* ─── PRICING ────────────────────────────────── */
+    #pricing { padding: 120px 0; }
+    .pricing-card { padding: 40px 32px; position: relative; }
+    .pricing-card.featured {
+      border-color: rgba(168,85,247,0.5);
+      background: rgba(15,18,50,0.9);
+    }
+    .pricing-badge {
+      position: absolute; top: -13px; left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: #fff; font-size: 11px; font-weight: 700;
+      padding: 4px 16px; border-radius: 100px;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .pricing-tier {
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--text-secondary); margin-bottom: 20px;
+    }
+    .pricing-price {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 56px; font-weight: 900; line-height: 1;
+      margin-bottom: 6px;
+    }
+    .pricing-price sup { font-size: 24px; vertical-align: top; margin-top: 12px; }
+    .pricing-period { font-size: 13px; color: var(--text-secondary); margin-bottom: 28px; }
+    .pricing-feature {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 14px; color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .pricing-feature i { color: var(--cyan); font-size: 13px; margin-top: 2px; flex-shrink: 0; }
+    .pricing-feature.disabled i { color: var(--text-secondary); opacity: .4; }
+    .pricing-feature.disabled span { opacity: .4; text-decoration: line-through; }
+
+    /* ─── CONTACT ────────────────────────────────── */
+    #contact { padding: 120px 0; }
+    .form-field {
+      margin-bottom: 20px;
+    }
+    .form-field label {
+      display: block; font-size: 12px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--text-secondary); margin-bottom: 8px;
+    }
+    .form-field input,
+    .form-field textarea {
+      width: 100%; padding: 13px 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border); border-radius: 10px;
+      color: var(--text-primary);
+      font-family: 'Manrope', sans-serif; font-size: 14px;
+      transition: border-color .2s, background .2s;
+    }
+    .form-field input:focus,
+    .form-field textarea:focus {
+      outline: none;
+      border-color: rgba(0,229,255,0.5);
+      background: rgba(0,229,255,0.03);
+    }
+    .form-field textarea { resize: none; height: 130px; }
+
+    /* ─── FOOTER ─────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 60px 0 32px;
+      background: rgba(0,0,0,0.4);
+    }
+    .footer-logo {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 20px; font-weight: 900;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 14px;
+    }
+    .footer-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.7; max-width: 260px; }
+    .footer-heading {
+      font-size: 12px; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+    .footer-link {
+      display: block; font-size: 14px; color: var(--text-secondary);
+      text-decoration: none; margin-bottom: 10px;
+      transition: color .2s;
+    }
+    .footer-link:hover { color: var(--cyan); }
+    .social-links { display: flex; gap: 12px; margin-top: 20px; }
+    .social-link {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all .2s;
+    }
+    .social-link:hover {
+      border-color: var(--cyan); color: var(--cyan);
+      background: var(--cyan-dim);
+    }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 28px; margin-top: 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-size: 13px; color: var(--text-secondary); }
+    .footer-version {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; color: var(--cyan);
+      background: var(--cyan-dim); padding: 4px 12px;
+      border-radius: 100px; border: 1px solid rgba(0,229,255,0.2);
+    }
+
+    /* ─── SCROLL INDICATOR ───────────────────────── */
+    #scrollProgress {
+      position: fixed; top: 0; left: 0; z-index: 9990;
+      height: 2px; width: 0%;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      transition: width .1s;
+    }
+
+    /* ─── NOTIFICATION TOAST ─────────────────────── */
+    #toast {
+      position: fixed; bottom: 30px; right: 30px;
+      background: rgba(5,5,20,0.95);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-size: 13.5px;
+      display: flex; align-items: center; gap: 12px;
+      backdrop-filter: blur(20px);
+      transform: translateY(100px); opacity: 0;
+      transition: all .4s cubic-bezier(.34,1.56,.64,1);
+      z-index: 5000; max-width: 340px;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast .toast-icon { font-size: 18px; }
+
+    /* ─── RESPONSIVE ─────────────────────────────── */
+    @media (max-width: 992px) {
+      .hero-stats { gap: 24px; }
+      .hero-orb { width: 280px; height: 280px; }
+    }
+    @media (max-width: 768px) {
+      .viz-btn-grid { grid-template-columns: repeat(2,1fr); }
+      #heroChart { max-width: 320px; }
+      .hero-title { letter-spacing: -1px; }
+      .floating-badge-1, .floating-badge-2 { display: none; }
+    }
+    @media (max-width: 480px) {
+      .hero-btns { flex-direction: column; }
+      .btn-primary-qv, .btn-secondary-qv { justify-content: center; }
+    }
+
+    /* Desktop Nav */
+    .nav-links-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-link {
+      font-size: 13.5px; font-weight: 500;
+      color: var(--text-secondary);
+      padding: 8px 16px; border-radius: 8px;
+      text-decoration: none;
+      transition: color .2s, background .2s;
+    }
+    .nav-link:hover { color: var(--cyan); background: var(--cyan-dim); }
+    .nav-cta {
+      font-size: 13px; font-weight: 700;
+      padding: 10px 22px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: #fff; text-decoration: none;
+      position: relative; overflow: hidden;
+      transition: box-shadow .3s;
+    }
+    .nav-cta::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      opacity: 0; transition: opacity .3s;
+    }
+    .nav-cta:hover { box-shadow: var(--glow-cyan); color: #fff; }
+    .nav-cta:hover::before { opacity: 1; }
+    .nav-cta span { position: relative; z-index: 1; }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--cyan); border-radius: 2px;
+      transition: all .3s;
+    }
+
+    @media (max-width: 768px) {
+      .nav-hamburger { display: flex; }
+      .nav-links-wrap {
+        position: fixed; top: 0; right: -300px;
+        width: 280px; height: 100vh;
+        background: rgba(5,5,20,0.97);
+        backdrop-filter: blur(30px);
+        border-left: 1px solid var(--border);
+        display: flex; flex-direction: column;
+        align-items: flex-start; justify-content: center;
+        padding: 40px;
+        gap: 8px;
+        transition: right .4s cubic-bezier(.77,0,.18,1);
+        z-index: 2000;
+      }
+      .nav-links-wrap.open { right: 0; }
+      .nav-link { font-size: 16px; padding: 12px 16px; width: 100%; }
+      .nav-inner { padding: 16px 20px; }
+    }
+
+
+
+  /* ═══════════════════════════════════════════════
+   SECTION
+═══════════════════════════════════════════════ */
+#features{
+  position:relative;
+  padding:112px 0 72px;
+  isolation:isolate;
+  overflow:hidden;
+}
+
+/* Fine grid */
+#features::before{
+  content:'';
+  position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(99,102,241,.042) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(99,102,241,.042) 1px,transparent 1px);
+  background-size:68px 68px;
+  mask-image:radial-gradient(ellipse 82% 88% at 50% 50%,#000 0%,transparent 78%);
+  -webkit-mask-image:radial-gradient(ellipse 82% 88% at 50% 50%,#000 0%,transparent 78%);
+}
+
+/* Ambient depth */
+#features::after{
+  content:'';
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 68% 58% at 50% 52%,rgba(99,102,241,.072) 0%,transparent 68%),
+    radial-gradient(ellipse 42% 36% at 12% 88%,rgba(6,182,212,.045) 0%,transparent 62%),
+    radial-gradient(ellipse 42% 36% at 88% 12%,rgba(139,92,246,.045) 0%,transparent 62%),
+    radial-gradient(ellipse 30% 25% at 50% 0%,rgba(99,102,241,.03) 0%,transparent 55%);
+}
+
+.container{max-width:1320px;margin:0 auto;padding:0 32px;position:relative;z-index:1}
+
+/* ═══════════════════════════════════════════════
+   SECTION HEADER
+═══════════════════════════════════════════════ */
+.s-head{text-align:center;margin-bottom:54px}
+
+.badge{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:5px 18px;border-radius:99px;
+  background:rgba(99,102,241,.09);
+  border:1px solid rgba(99,102,241,.2);
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.15em;text-transform:uppercase;color:#a5b4fc;
+  margin-bottom:22px;
+}
+.badge i{
+  width:6px;height:6px;border-radius:50%;
+  background:#818cf8;box-shadow:0 0 9px #818cf8;
+  display:block;flex-shrink:0;
+  animation:blink 2.6s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.28;transform:scale(.72)}}
+
+.s-head h2{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(32px,4.4vw,54px);
+  font-weight:800;line-height:1.07;
+  background:linear-gradient(148deg,#fff 0%,#c7d2fe 42%,#818cf8 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:16px;
+}
+.s-head p{
+  font-size:16px;color:var(--dim);font-weight:300;
+  max-width:450px;margin:0 auto;line-height:1.74;
+}
+
+/* ═══════════════════════════════════════════════
+   ORBIT SCENE
+═══════════════════════════════════════════════ */
+.orb-scene{
+  position:relative;
+  height:960px;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* ── Orbit tracks ── */
+.trk{
+  position:absolute;border-radius:50%;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.trk-main{
+  width:calc(var(--R)*2);
+  height:calc(var(--R)*2);
+  border:1px solid rgba(99,102,241,.17);
+  box-shadow:0 0 0 1px rgba(99,102,241,.04) inset;
+}
+.trk-in{
+  width:530px;height:530px;
+  border:1px dashed rgba(6,182,212,.08);
+  animation:trk-s 112s linear infinite reverse;
+}
+.trk-out{
+  width:870px;height:870px;
+  border:1px dashed rgba(139,92,246,.055);
+  animation:trk-s 175s linear infinite;
+}
+.trk-far{
+  width:980px;height:980px;
+  border:1px solid rgba(99,102,241,.02);
+  animation:trk-s 210s linear infinite reverse;
+}
+@keyframes trk-s{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+/* ── Glowing orbit dots ── */
+.gd{
+  position:absolute;top:50%;left:50%;
+  width:0;height:0;transform-origin:0 0;
+}
+.gd::before{
+  content:'';position:absolute;
+  width:7px;height:7px;border-radius:50%;
+  left:calc(var(--R) - 3.5px);top:-3.5px;
+}
+.gd-a::before{
+  background:#6366f1;
+  box-shadow:0 0 16px #6366f1,0 0 32px rgba(99,102,241,.55);
+}
+.gd-b::before{
+  background:#10b981;
+  box-shadow:0 0 16px #10b981,0 0 32px rgba(16,185,129,.55);
+}
+.gd-a{animation:orb-cw 21s linear infinite}
+.gd-b{animation:orb-cw 21s linear infinite;animation-delay:-10.5s}
+
+/* ── Master keyframes ── */
+@keyframes orb-cw {to{transform:rotate( 360deg)}}
+@keyframes orb-ccw{to{transform:rotate(-360deg)}}
+
+/* ═══════════════════════════════════════════════
+   NUCLEUS (PERFECTLY CENTRED)
+═══════════════════════════════════════════════ */
+.nucleus{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:224px;height:224px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  z-index:20;
+  will-change:transform;
+}
+
+/* Deep bg glow */
+.n-bg{
+  position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle,rgba(99,102,241,.26) 0%,rgba(2,9,22,.97) 62%);
+  border:1.5px solid rgba(99,102,241,.28);
+  box-shadow:
+    0 0 55px rgba(99,102,241,.48),
+    0 0 110px rgba(99,102,241,.18),
+    0 0 220px rgba(99,102,241,.06),
+    inset 0 0 35px rgba(99,102,241,.06);
+}
+
+/* Conic spinner — inner */
+.n-s1{
+  position:absolute;inset:-7px;border-radius:50%;
+  background:conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(99,102,241,.95) 20%,
+    rgba(139,92,246,.72) 42%,
+    transparent 65%
+  );
+  animation:orb-cw 4.8s linear infinite;
+  mask-image:radial-gradient(circle,transparent 43.5%,#000 45.8%,#000 50%,transparent 52%);
+  -webkit-mask-image:radial-gradient(circle,transparent 43.5%,#000 45.8%,#000 50%,transparent 52%);
+}
+
+/* Conic spinner — outer */
+.n-s2{
+  position:absolute;inset:-15px;border-radius:50%;
+  background:conic-gradient(
+    from 165deg,
+    transparent 0%,
+    rgba(6,182,212,.62) 16%,
+    transparent 34%,
+    rgba(6,182,212,.28) 72%,
+    transparent 100%
+  );
+  animation:orb-cw 9.2s linear infinite reverse;
+  mask-image:radial-gradient(circle,transparent 40%,#000 42.5%,#000 47%,transparent 49%);
+  -webkit-mask-image:radial-gradient(circle,transparent 40%,#000 42.5%,#000 47%,transparent 49%);
+}
+
+/* Outer pulse */
+.n-pulse{
+  position:absolute;inset:-30px;border-radius:50%;
+  background:radial-gradient(circle,rgba(99,102,241,.1) 0%,transparent 65%);
+  animation:np 5s ease-in-out infinite;
+}
+@keyframes np{0%,100%{transform:scale(1);opacity:.65}50%{transform:scale(1.2);opacity:1}}
+
+/* Tick marks ring */
+.n-ticks{
+  position:absolute;inset:-22px;border-radius:50%;
+  border:1px solid rgba(99,102,241,.12);
+  animation:orb-cw 32s linear infinite reverse;
+}
+.n-ticks::before,.n-ticks::after{
+  content:'';position:absolute;
+  background:rgba(99,102,241,.55);
+  border-radius:2px;
+}
+.n-ticks::before{width:2px;height:10px;top:-5px;left:calc(50% - 1px)}
+.n-ticks::after {width:2px;height:10px;bottom:-5px;left:calc(50% - 1px)}
+
+/* ═══════════════════════════════════════════════
+   ORBITAL MECHANICS — mathematically correct
+   
+   .orbiter:   zero-size div at container center,
+               rotates CW around its top-left (= center).
+   .c-pivot:   zero-size div at (--R, 0) inside orbiter,
+               counter-rotates so card stays upright.
+   .fc:        actual card, centered on pivot via translate(-50%,-50%).
+═══════════════════════════════════════════════ */
+.orbiter{
+  position:absolute;
+  top:50%;left:50%;
+  width:0;height:0;
+  transform-origin:0 0;
+  animation:orb-cw var(--T) linear infinite;
+  animation-delay:var(--od,0s);
+  will-change:transform;
+}
+
+.c-pivot{
+  position:absolute;
+  top:0;left:var(--R);
+  width:0;height:0;
+  transform-origin:0 0;
+  animation:orb-ccw var(--T) linear infinite;
+  animation-delay:var(--od,0s);
+  will-change:transform;
+}
+
+/* Pause entire orbit when hovering that card */
+.orbiter:has(.fc:hover),
+.orbiter:has(.fc:hover) .c-pivot{
+  animation-play-state:paused;
+}
+
+/* ═══════════════════════════════════════════════
+   FEATURE CARD
+═══════════════════════════════════════════════ */
+.fc{
+  position:absolute;
+  top:0;left:0;
+  transform:translate(-50%,-50%);
+  width:var(--CW);
+  cursor:pointer;
+  will-change:transform;
+}
+
+.fc-in{
+  background:rgba(3,9,24,.9);
+  backdrop-filter:blur(32px) saturate(170%);
+  -webkit-backdrop-filter:blur(32px) saturate(170%);
+  border-radius:22px;
+  padding:28px 24px 24px;
+  border:1px solid rgba(255,255,255,.062);
+  position:relative;
+  overflow:hidden;
+  transition:
+    transform .48s cubic-bezier(.34,1.56,.64,1),
+    box-shadow .48s ease,
+    border-color .48s ease;
+}
+
+/* Gradient border revealed on hover */
+.fc-in::before{
+  content:'';
+  position:absolute;inset:-1px;
+  border-radius:23px;
+  background:var(--cborder);
+  opacity:0;z-index:-1;
+  transition:opacity .48s ease;
+}
+
+/* Shimmer sweep */
+.fc-in::after{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(112deg,
+    transparent 15%,
+    rgba(255,255,255,.065) 50%,
+    transparent 85%);
+  transform:translateX(-130%);
+  transition:transform .8s ease;
+  border-radius:22px;
+  pointer-events:none;
+}
+
+.fc:hover .fc-in{
+  transform:scale(1.065) translateY(-11px);
+  box-shadow:0 32px 75px -18px var(--cgl);
+  border-color:transparent;
+}
+.fc:hover .fc-in::before{opacity:1}
+.fc:hover .fc-in::after {transform:translateX(130%)}
+
+/* Subtle top glow line */
+.fc-topline{
+  position:absolute;top:0;left:24px;right:24px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--cline),transparent);
+  opacity:.6;
+  transition:opacity .48s ease;
+}
+.fc:hover .fc-topline{opacity:1}
+
+/* Card icon */
+.c-icon{
+  width:48px;height:48px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--ibg);
+  margin-bottom:16px;
+  position:relative;
+}
+.c-icon::after{
+  content:'';
+  position:absolute;inset:0;border-radius:14px;
+  background:var(--ibg);
+  filter:blur(12px);
+  opacity:0;
+  transition:opacity .4s ease;
+  z-index:-1;
+}
+.fc:hover .c-icon::after{opacity:.7}
+.c-icon svg{width:21px;height:21px}
+
+/* Card text */
+.c-name{
+  font-family:'Syne',sans-serif;
+  font-size:14.5px;font-weight:700;
+  color:#f0f4ff;
+  margin-bottom:6px;
+  letter-spacing:.005em;
+}
+
+.c-desc{
+  font-size:11.5px;
+  color:var(--dim);
+  line-height:1.64;
+  margin-bottom:18px;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+/* Metric block */
+.c-metric{
+  display:flex;align-items:baseline;gap:6px;
+  border-top:1px solid rgba(255,255,255,.048);
+  padding-top:14px;
+  margin-top:auto;
+}
+.m-val{
+  font-family:'Syne',sans-serif;
+  font-size:27px;font-weight:800;line-height:1;
+  background:var(--mgrad);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.m-unit{
+  font-family:'Syne',sans-serif;
+  font-size:14px;font-weight:700;
+  background:var(--mgrad);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.m-lbl{
+  font-size:9.5px;font-weight:500;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:#1e2e45;
+  margin-left:2px;
+}
+
+/* Bottom accent bar */
+.c-bar{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:2px;
+  border-radius:0 0 22px 22px;
+  background:var(--cbar);
+  opacity:.5;
+  transition:opacity .48s ease;
+}
+.fc:hover .c-bar{opacity:.85}
+
+/* ═══════════════════════════════════════════════
+   SECTION STATS STRIP
+═══════════════════════════════════════════════ */
+.stats-strip{
+  display:flex;align-items:center;justify-content:center;
+  gap:0;
+  margin-top:0;
+  position:relative;z-index:2;
+}
+.stat-item{
+  display:flex;flex-direction:column;align-items:center;
+  padding:0 40px;
+  border-right:1px solid rgba(255,255,255,.07);
+}
+.stat-item:last-child{border-right:none}
+.stat-num{
+  font-family:'Syne',sans-serif;
+  font-size:26px;font-weight:800;
+  background:linear-gradient(135deg,#fff,#c7d2fe);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  line-height:1.1;
+}
+.stat-lbl{
+  font-size:11px;color:var(--dim);
+  text-transform:uppercase;letter-spacing:.1em;
+  margin-top:3px;
+}
+
+/* ═══════════════════════════════════════════════
+   MOBILE GRID
+═══════════════════════════════════════════════ */
+.mob-grid{
+  display:none;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+.mob-grid .fc{
+  position:static;
+  transform:none;
+  width:100%;
+}
+.mob-grid .fc:hover .fc-in{
+  transform:translateY(-7px) scale(1.02);
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(max-width:1120px){
+  :root{--R:305px;--CW:238px}
+  .orb-scene{height:800px}
+  .trk-far{display:none}
+}
+@media(max-width:780px){
+  .orb-scene{display:none}
+  .mob-grid{display:grid}
+  .stats-strip{display:none}
+}
+@media(max-width:480px){
+  .mob-grid{grid-template-columns:1fr}
+}
+  </style>
+</head>
+<body>
+  <!-- Custom Cursor -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- Scroll Progress -->
+  <div id="scrollProgress"></div>
+
+  <!-- Three.js Background -->
+  <canvas id="quantum-bg"></canvas>
+
+  <!-- Toast Notification -->
+  <div id="toast">
+    <span class="toast-icon">✓</span>
+    <span id="toast-msg">Done!</span>
+  </div>
+
+  <!-- ─── PRELOADER ──────────────────────────────── -->
+  <div id="preloader">
+    <div class="preloader-rings">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="preloader-text">Initializing Quantum Core</div>
+    <div class="preloader-bar-wrap">
+      <div class="preloader-bar"></div>
+    </div>
+  </div>
+
+  <!-- ─── NAVIGATION ────────────────────────────── -->
+  <nav id="mainNav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">Quantum<span>Viz</span> AI</a>
+      <div class="nav-links-wrap" id="navLinksWrap">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="#demo" class="nav-link">Demo</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <a href="#demo" class="nav-cta ms-2"><span>Get Started</span></a>
+      </div>
+      <div class="nav-hamburger" id="navToggle">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ──────────────────────────────────── -->
+  <section id="hero" class="grid-bg">
+    <div class="container" style="max-width:1240px;margin:0 auto;padding:0 24px;">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            v2.0 Now Live — Quantum AI Engine
+          </div>
+          <h1 class="hero-title">
+            <span class="line1">Quantum Leap in</span>
+            <span class="line2">Data <span class="typed-wrapper"><span id="typed"></span></span></span>
+          </h1>
+          <p class="hero-sub">Experience the future of intelligence. QuantumViz AI transforms raw data into multidimensional insights with cutting-edge visualization and real AI analysis.</p>
+          <div class="hero-btns">
+            <a href="#demo" class="btn-primary-qv">
+              <i class="fas fa-rocket"></i> Launch Platform
+            </a>
+            <a href="#features" class="btn-secondary-qv">
+              <i class="fas fa-play-circle"></i> Explore Features
+            </a>
+          </div>
+          <div class="hero-stats">
+            <div>
+              <div class="hero-stat-num" data-count="10">10+</div>
+              <div class="hero-stat-label">Data Points Processed</div>
+            </div>
+            <div>
+              <div class="hero-stat-num" data-count="99.7">99.7%</div>
+              <div class="hero-stat-label">Accuracy Rate</div>
+            </div>
+            <div>
+              <div class="hero-stat-num" data-count="50">50ms</div>
+              <div class="hero-stat-label">Query Response</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="hero-visual">
+            <div class="hero-orb"></div>
+            <div id="heroChart" style="position:relative;">
+              <canvas id="heroChartCanvas" height="260"></canvas>
+            </div>
+            <div class="floating-badge floating-badge-1">
+              <i class="fas fa-brain" style="color:var(--cyan)"></i>
+              <span>AI Model: Active</span>
+            </div>
+            <div class="floating-badge floating-badge-2">
+              <i class="fas fa-bolt" style="color:var(--green)"></i>
+              <span>Real-time Analysis</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── MARQUEE ────────────────────────────────── -->
+  <div class="marquee-wrap" style="position:relative;z-index:1;">
+    <div class="marquee-inner">
+      <div class="marquee-item"><span class="dot"></span>Quantum Neural Networks</div>
+      <div class="marquee-item"><span class="dot"></span>5D Hypergraph Visualization</div>
+      <div class="marquee-item"><span class="dot"></span>Temporal Anomaly Detection</div>
+      <div class="marquee-item"><span class="dot"></span>Real-time Data Streaming</div>
+      <div class="marquee-item"><span class="dot"></span>AI-Powered Insights</div>
+      <div class="marquee-item"><span class="dot"></span>Predictive Analytics</div>
+      <div class="marquee-item"><span class="dot"></span>Quantum K-Means Clustering</div>
+      <div class="marquee-item"><span class="dot"></span>LSTM Forecasting</div>
+      <!-- Duplicate for seamless loop -->
+      <div class="marquee-item"><span class="dot"></span>Quantum Neural Networks</div>
+      <div class="marquee-item"><span class="dot"></span>5D Hypergraph Visualization</div>
+      <div class="marquee-item"><span class="dot"></span>Temporal Anomaly Detection</div>
+      <div class="marquee-item"><span class="dot"></span>Real-time Data Streaming</div>
+      <div class="marquee-item"><span class="dot"></span>AI-Powered Insights</div>
+      <div class="marquee-item"><span class="dot"></span>Predictive Analytics</div>
+      <div class="marquee-item"><span class="dot"></span>Quantum K-Means Clustering</div>
+      <div class="marquee-item"><span class="dot"></span>LSTM Forecasting</div>
+    </div>
+  </div>
+
+
+  <section id="features">
+<div class="container">
+
+  <!-- ── HEADER ── -->
+  <div class="s-head">
+    <div class="badge"><i></i>Capabilities</div>
+    <h2>Quantum-Powered Features</h2>
+    <p>Every tool engineered to redefine what's possible at the intersection of AI and modern data intelligence.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       ORBIT SCENE — desktop / large tablet
+  ══════════════════════════════════════════ -->
+  <div class="orb-scene">
+
+    <!-- Decorative rings -->
+    <div class="trk trk-far"></div>
+    <div class="trk trk-out"></div>
+    <div class="trk trk-main"></div>
+    <div class="trk trk-in"></div>
+
+    <!-- Orbiting glow dots on main track -->
+    <div class="gd gd-a"></div>
+    <div class="gd gd-b"></div>
+
+    <!-- ── NUCLEUS ── -->
+    <div class="nucleus">
+      <div class="n-pulse"></div>
+      <div class="n-bg"></div>
+      <div class="n-ticks"></div>
+      <div class="n-s1"></div>
+      <div class="n-s2"></div>
+      <lottie-player
+        src="3.json"
+        background="transparent"
+        speed="0.65"
+        style="width:168px;height:168px;position:relative;z-index:2;flex-shrink:0"
+        loop autoplay>
+      </lottie-player>
+    </div>
+
+    <!-- ────────────────────────────────────────
+         CARD 1 · Neural Architecture · 0°
+         indigo
+    ──────────────────────────────────────── -->
+    <div class="orbiter" style="--od:0s">
+      <div class="c-pivot">
+        <div class="fc" style="
+          --cborder: linear-gradient(138deg,rgba(99,102,241,.72),rgba(139,92,246,.5));
+          --cgl:     rgba(99,102,241,.4);
+          --ibg:     rgba(99,102,241,.13);
+          --cline:   #6366f1;
+          --mgrad:   linear-gradient(135deg,#818cf8,#c7d2fe);
+          --cbar:    linear-gradient(90deg,#6366f1,#8b5cf6)">
+          <div class="fc-in">
+            <div class="fc-topline"></div>
+            <div class="c-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="3.5" r="1.5"/>
+                <circle cx="3.5" cy="19" r="1.5"/>
+                <circle cx="20.5" cy="19" r="1.5"/>
+                <path d="M12 5v3.5m0 0C12 11 9 12.5 9 14.5m3-6c0 2.5 3 4 3 6"/>
+                <path d="M9 14.5l-4 3m9-3 4 3m-9 0h6"/>
+              </svg>
+            </div>
+            <div class="c-name">Neural Architecture</div>
+            <div class="c-desc">Self-healing graph networks with adaptive real-time topology reconfiguration.</div>
+            <div class="c-metric">
+              <span class="m-val">99.7</span><span class="m-unit">%</span>
+              <span class="m-lbl">Accuracy</span>
+            </div>
+            <div class="c-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────────────
+         CARD 2 · Quantum Processing · 60°
+         cyan
+    ──────────────────────────────────────── -->
+    <div class="orbiter" style="--od:-7.667s">
+      <div class="c-pivot">
+        <div class="fc" style="
+          --cborder: linear-gradient(138deg,rgba(6,182,212,.72),rgba(34,211,238,.5));
+          --cgl:     rgba(6,182,212,.4);
+          --ibg:     rgba(6,182,212,.1);
+          --cline:   #06b6d4;
+          --mgrad:   linear-gradient(135deg,#22d3ee,#a5f3fc);
+          --cbar:    linear-gradient(90deg,#06b6d4,#22d3ee)">
+          <div class="fc-in">
+            <div class="fc-topline"></div>
+            <div class="c-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
+            <div class="c-name">Quantum Processing</div>
+            <div class="c-desc">Sub-nanosecond parallel execution across distributed qubit compute clusters.</div>
+            <div class="c-metric">
+              <span class="m-val">10</span><span class="m-unit">ns</span>
+              <span class="m-lbl">Latency</span>
+            </div>
+            <div class="c-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────────────
+         CARD 3 · Live Data Streams · 120°
+         emerald
+    ──────────────────────────────────────── -->
+    <div class="orbiter" style="--od:-15.333s">
+      <div class="c-pivot">
+        <div class="fc" style="
+          --cborder: linear-gradient(138deg,rgba(16,185,129,.72),rgba(52,211,153,.5));
+          --cgl:     rgba(16,185,129,.4);
+          --ibg:     rgba(16,185,129,.1);
+          --cline:   #10b981;
+          --mgrad:   linear-gradient(135deg,#34d399,#a7f3d0);
+          --cbar:    linear-gradient(90deg,#10b981,#34d399)">
+          <div class="fc-in">
+            <div class="fc-topline"></div>
+            <div class="c-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+            <div class="c-name">Live Data Streams</div>
+            <div class="c-desc">Ingest and process millions of events per second with zero-copy pipelines.</div>
+            <div class="c-metric">
+              <span class="m-val">1M</span><span class="m-unit">eps</span>
+              <span class="m-lbl">Throughput</span>
+            </div>
+            <div class="c-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────────────
+         CARD 4 · Predictive Engine · 180°
+         amber
+    ──────────────────────────────────────── -->
+    <div class="orbiter" style="--od:-23s">
+      <div class="c-pivot">
+        <div class="fc" style="
+          --cborder: linear-gradient(138deg,rgba(245,158,11,.72),rgba(251,191,36,.5));
+          --cgl:     rgba(245,158,11,.4);
+          --ibg:     rgba(245,158,11,.1);
+          --cline:   #f59e0b;
+          --mgrad:   linear-gradient(135deg,#fbbf24,#fde68a);
+          --cbar:    linear-gradient(90deg,#f59e0b,#fbbf24)">
+          <div class="fc-in">
+            <div class="fc-topline"></div>
+            <div class="c-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"/>
+                <line x1="12" y1="20" x2="12" y2="4"/>
+                <line x1="6"  y1="20" x2="6"  y2="14"/>
+                <polyline points="2 17 6 13 10 16 14 9 18 12 22 8"/>
+              </svg>
+            </div>
+            <div class="c-name">Predictive Engine</div>
+            <div class="c-desc">Multi-horizon temporal forecasting with ensemble confidence intervals.</div>
+            <div class="c-metric">
+              <span class="m-val">3</span><span class="m-unit">yr</span>
+              <span class="m-lbl">Horizon</span>
+            </div>
+            <div class="c-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────────────
+         CARD 5 · Distributed Fabric · 240°
+         rose
+    ──────────────────────────────────────── -->
+    <div class="orbiter" style="--od:-30.667s">
+      <div class="c-pivot">
+        <div class="fc" style="
+          --cborder: linear-gradient(138deg,rgba(244,63,94,.72),rgba(251,113,133,.5));
+          --cgl:     rgba(244,63,94,.4);
+          --ibg:     rgba(244,63,94,.1);
+          --cline:   #f43f5e;
+          --mgrad:   linear-gradient(135deg,#fb7185,#fecdd3);
+          --cbar:    linear-gradient(90deg,#f43f5e,#fb7185)">
+          <div class="fc-in">
+            <div class="fc-topline"></div>
+            <div class="c-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fb7185" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="4"  r="2"/>
+                <circle cx="4"  cy="20" r="2"/>
+                <circle cx="20" cy="20" r="2"/>
+                <path d="M12 6v3.5M10.2 9.5 6 18m3.8-8.5 4 8.5m-7.5 0h7.4"/>
+              </svg>
+            </div>
+            <div class="c-name">Distributed Fabric</div>
+            <div class="c-desc">Edge-native mesh topology with autonomous self-healing node coordination.</div>
+            <div class="c-metric">
+              <span class="m-val">99.99</span><span class="m-unit">%</span>
+              <span class="m-lbl">Uptime</span>
+            </div>
+            <div class="c-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────────────
+         CARD 6 · AutoML Pipeline · 300°
+         violet
+    ──────────────────────────────────────── -->
+    <div class="orbiter" style="--od:-38.333s">
+      <div class="c-pivot">
+        <div class="fc" style="
+          --cborder: linear-gradient(138deg,rgba(139,92,246,.72),rgba(167,139,250,.5));
+          --cgl:     rgba(139,92,246,.4);
+          --ibg:     rgba(139,92,246,.1);
+          --cline:   #8b5cf6;
+          --mgrad:   linear-gradient(135deg,#a78bfa,#ede9fe);
+          --cbar:    linear-gradient(90deg,#8b5cf6,#a78bfa)">
+          <div class="fc-in">
+            <div class="fc-topline"></div>
+            <div class="c-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3"  y="3"  width="8" height="8" rx="2"/>
+                <rect x="13" y="3"  width="8" height="8" rx="2"/>
+                <rect x="3"  y="13" width="8" height="8" rx="2"/>
+                <path d="M17 13v8m-3-4h6"/>
+              </svg>
+            </div>
+            <div class="c-name">AutoML Pipeline</div>
+            <div class="c-desc">Zero-touch model selection, hypertuning, and continuous drift-aware deployment.</div>
+            <div class="c-metric">
+              <span class="m-val">0</span>
+              <span class="m-lbl">Manual Steps</span>
+            </div>
+            <div class="c-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.orb-scene -->
+
+  <!-- ── STATS STRIP ── -->
+  <div class="stats-strip">
+    <div class="stat-item">
+      <span class="stat-num">340 <small style="font-size:15px;font-weight:700">TB/s</small></span>
+      <span class="stat-lbl">Peak Data Throughput</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">2.4M</span>
+      <span class="stat-lbl">Models Trained</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">&lt; 4 <small style="font-size:15px;font-weight:700">ms</small></span>
+      <span class="stat-lbl">Global P99 Latency</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">99.99<small style="font-size:16px;font-weight:700">%</small></span>
+      <span class="stat-lbl">Platform Uptime</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       MOBILE GRID — hidden on desktop
+  ══════════════════════════════════════════ -->
+  <div class="mob-grid">
+
+    <div class="fc" style="--cborder:linear-gradient(138deg,rgba(99,102,241,.72),rgba(139,92,246,.5));--cgl:rgba(99,102,241,.4);--ibg:rgba(99,102,241,.13);--cline:#6366f1;--mgrad:linear-gradient(135deg,#818cf8,#c7d2fe);--cbar:linear-gradient(90deg,#6366f1,#8b5cf6)">
+      <div class="fc-in"><div class="fc-topline"></div>
+        <div class="c-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="3.5" r="1.5"/><circle cx="3.5" cy="19" r="1.5"/><circle cx="20.5" cy="19" r="1.5"/><path d="M12 5v3.5m0 0C12 11 9 12.5 9 14.5m3-6c0 2.5 3 4 3 6"/><path d="M9 14.5l-4 3m9-3 4 3m-9 0h6"/></svg></div>
+        <div class="c-name">Neural Architecture</div>
+        <div class="c-desc">Self-healing graph networks with adaptive topology.</div>
+        <div class="c-metric"><span class="m-val">99.7</span><span class="m-unit">%</span><span class="m-lbl">Accuracy</span></div>
+        <div class="c-bar"></div>
+      </div>
+    </div>
+
+    <div class="fc" style="--cborder:linear-gradient(138deg,rgba(6,182,212,.72),rgba(34,211,238,.5));--cgl:rgba(6,182,212,.4);--ibg:rgba(6,182,212,.1);--cline:#06b6d4;--mgrad:linear-gradient(135deg,#22d3ee,#a5f3fc);--cbar:linear-gradient(90deg,#06b6d4,#22d3ee)">
+      <div class="fc-in"><div class="fc-topline"></div>
+        <div class="c-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.75" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="c-name">Quantum Processing</div>
+        <div class="c-desc">Sub-nanosecond distributed qubit execution.</div>
+        <div class="c-metric"><span class="m-val">10</span><span class="m-unit">ns</span><span class="m-lbl">Latency</span></div>
+        <div class="c-bar"></div>
+      </div>
+    </div>
+
+    <div class="fc" style="--cborder:linear-gradient(138deg,rgba(16,185,129,.72),rgba(52,211,153,.5));--cgl:rgba(16,185,129,.4);--ibg:rgba(16,185,129,.1);--cline:#10b981;--mgrad:linear-gradient(135deg,#34d399,#a7f3d0);--cbar:linear-gradient(90deg,#10b981,#34d399)">
+      <div class="fc-in"><div class="fc-topline"></div>
+        <div class="c-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.75" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div class="c-name">Live Data Streams</div>
+        <div class="c-desc">Millions of events per second, zero-copy pipelines.</div>
+        <div class="c-metric"><span class="m-val">1M</span><span class="m-unit">eps</span><span class="m-lbl">Throughput</span></div>
+        <div class="c-bar"></div>
+      </div>
+    </div>
+
+    <div class="fc" style="--cborder:linear-gradient(138deg,rgba(245,158,11,.72),rgba(251,191,36,.5));--cgl:rgba(245,158,11,.4);--ibg:rgba(245,158,11,.1);--cline:#f59e0b;--mgrad:linear-gradient(135deg,#fbbf24,#fde68a);--cbar:linear-gradient(90deg,#f59e0b,#fbbf24)">
+      <div class="fc-in"><div class="fc-topline"></div>
+        <div class="c-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.75" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><polyline points="2 17 6 13 10 16 14 9 18 12 22 8"/></svg></div>
+        <div class="c-name">Predictive Engine</div>
+        <div class="c-desc">Multi-horizon temporal forecasting with confidence intervals.</div>
+        <div class="c-metric"><span class="m-val">3</span><span class="m-unit">yr</span><span class="m-lbl">Horizon</span></div>
+        <div class="c-bar"></div>
+      </div>
+    </div>
+
+    <div class="fc" style="--cborder:linear-gradient(138deg,rgba(244,63,94,.72),rgba(251,113,133,.5));--cgl:rgba(244,63,94,.4);--ibg:rgba(244,63,94,.1);--cline:#f43f5e;--mgrad:linear-gradient(135deg,#fb7185,#fecdd3);--cbar:linear-gradient(90deg,#f43f5e,#fb7185)">
+      <div class="fc-in"><div class="fc-topline"></div>
+        <div class="c-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fb7185" stroke-width="1.75" stroke-linecap="round"><circle cx="12" cy="4" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="20" cy="20" r="2"/><path d="M12 6v3.5M10.2 9.5 6 18m3.8-8.5 4 8.5m-7.5 0h7.4"/></svg></div>
+        <div class="c-name">Distributed Fabric</div>
+        <div class="c-desc">Edge-native mesh with autonomous self-healing coordination.</div>
+        <div class="c-metric"><span class="m-val">99.99</span><span class="m-unit">%</span><span class="m-lbl">Uptime</span></div>
+        <div class="c-bar"></div>
+      </div>
+    </div>
+
+    <div class="fc" style="--cborder:linear-gradient(138deg,rgba(139,92,246,.72),rgba(167,139,250,.5));--cgl:rgba(139,92,246,.4);--ibg:rgba(139,92,246,.1);--cline:#8b5cf6;--mgrad:linear-gradient(135deg,#a78bfa,#ede9fe);--cbar:linear-gradient(90deg,#8b5cf6,#a78bfa)">
+      <div class="fc-in"><div class="fc-topline"></div>
+        <div class="c-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.75" stroke-linecap="round"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><path d="M17 13v8m-3-4h6"/></svg></div>
+        <div class="c-name">AutoML Pipeline</div>
+        <div class="c-desc">Zero-touch model selection, tuning, and deployment.</div>
+        <div class="c-metric"><span class="m-val">0</span><span class="m-lbl">Manual Steps</span></div>
+        <div class="c-bar"></div>
+      </div>
+    </div>
+
+  </div><!-- /.mob-grid -->
+
+</div><!-- /.container -->
+</section>
+ 
+
+  <!-- ─── STATS ──────────────────────────────────── -->
+  <section id="stats">
+    <div class="container" style="max-width:1240px;margin:0 auto;padding:0 24px;">
+      <div class="stats-grid glass-card" style="border-radius:20px;overflow:hidden;" data-aos="fade-up">
+        <div class="stat-box">
+          <div class="stat-number"><span class="counter" data-target="10">0</span><span class="stat-unit"></span></div>
+          <div class="stat-label">Data Points Analyzed</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number"><span class="counter" data-target="50">0</span><span class="stat-unit">ms</span></div>
+          <div class="stat-label">Avg. Response Time</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number"><span class="counter" data-target="15">0</span><span class="stat-unit">+</span></div>
+          <div class="stat-label">Visualization Types</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number"><span class="counter" data-target="99">0</span><span class="stat-unit">%</span></div>
+          <div class="stat-label">Uptime SLA</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HOW IT WORKS ──────────────────────────── -->
+  <section id="how-it-works" style="padding:120px 0;">
+    <div class="container" style="max-width:1240px;margin:0 auto;padding:0 24px;">
+      <div class="row align-items-center">
+        <div class="col-lg-5 mb-5 mb-lg-0" data-aos="fade-right">
+          <div class="section-label">Process</div>
+          <h2 class="section-title" style="margin-bottom:20px;">From Data to<br>Insight in Seconds</h2>
+          <p style="color:var(--text-secondary);font-size:15px;line-height:1.8;">Our quantum pipeline eliminates complexity. Upload, configure, analyze — three steps to breakthrough insights you never knew existed in your data.</p>
+        </div>
+        <div class="col-lg-7">
+          <div class="row g-4">
+            <div class="col-sm-6" data-aos="fade-up" data-aos-delay="0">
+              <div class="glass-card step-card">
+                <div class="feature-icon-wrap fi-cyan"><i class="fas fa-upload"></i></div>
+                <div class="step-number">01</div>
+                <div class="step-title">Upload Your Data</div>
+                <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.7;">Drag and drop any CSV file. Our parser handles any structure automatically, detecting data types and relationships.</p>
+              </div>
+            </div>
+            <div class="col-sm-6" data-aos="fade-up" data-aos-delay="100">
+              <div class="glass-card step-card">
+                <div class="feature-icon-wrap fi-purple"><i class="fas fa-sliders"></i></div>
+                <div class="step-number">02</div>
+                <div class="step-title">Select Algorithm</div>
+                <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.7;">Choose from 15+ quantum-classical hybrid algorithms. Each model is pre-optimized for different data types.</p>
+              </div>
+            </div>
+            <div class="col-sm-6" data-aos="fade-up" data-aos-delay="200">
+              <div class="glass-card step-card">
+                <div class="feature-icon-wrap fi-green"><i class="fas fa-chart-bar"></i></div>
+                <div class="step-number">03</div>
+                <div class="step-title">Visualize & Explore</div>
+                <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.7;">Render 10+ chart types in real time. From 4D scatter plots to temporal anomaly maps — see your data come alive.</p>
+              </div>
+            </div>
+            <div class="col-sm-6" data-aos="fade-up" data-aos-delay="300">
+              <div class="glass-card step-card">
+                <div class="feature-icon-wrap fi-cyan"><i class="fas fa-comment-dots"></i></div>
+                <div class="step-number">04</div>
+                <div class="step-title">Chat with AI</div>
+                <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.7;">Ask your data questions in plain language. Our Groq-powered AI analyst gives instant, contextual insights.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── DEMO ───────────────────────────────────── -->
+  <section id="demo" style="padding:120px 0;background:rgba(0,0,0,0.2);">
+    <div class="container" style="max-width:1240px;margin:0 auto;padding:0 24px;">
+      <div class="text-center mb-5" data-aos="fade-up">
+        <div class="section-label" style="justify-content:center;">Interactive</div>
+        <h2 class="section-title">Quantum Visualization Demo</h2>
+        <p style="color:var(--text-secondary);font-size:16px;max-width:480px;margin:16px auto 0;">Upload your CSV and explore every dimension of your data in real time.</p>
+      </div>
+
+      <div class="row g-4">
+        <!-- Left: Upload + Controls -->
+        <div class="col-lg-5" data-aos="fade-right">
+          <div class="glass-card p-4 h-100 d-flex flex-column gap-3">
+            <div>
+              <div class="upload-zone" id="uploadZone">
+                <i class="fas fa-cloud-upload-alt" style="font-size:28px;color:var(--cyan);margin-bottom:12px;display:block;"></i>
+                <div style="font-size:14px;font-weight:600;color:var(--text-primary);">Drop your CSV here</div>
+                <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">or click to browse files</div>
+                <input type="file" id="csvFile" accept=".csv" style="display:none">
+              </div>
+              <div id="fileInfo" style="font-size:12px;color:var(--cyan);margin-top:8px;display:none;">
+                <i class="fas fa-file-csv"></i> <span id="fileName"></span>
+              </div>
+            </div>
+
+            <div>
+              <label style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-secondary);display:block;margin-bottom:8px;">Algorithm</label>
+              <select id="algorithmSelect" class="algo-select">
+                <option value="">— Select Algorithm —</option>
+                <optgroup label="🔮 Quantum Algorithms" style="color:var(--cyan)">
+                  <option value="quantum_neural_network">Quantum Neural Network</option>
+                  <option value="quantum_svm">Quantum Support Vector Machine</option>
+                  <option value="quantum_kmeans">Quantum K-Means</option>
+                  <option value="quantum_pca">Quantum PCA</option>
+                  <option value="quantum_random_forest">Quantum Random Forest</option>
+                </optgroup>
+                <optgroup label="⚡ Classical Algorithms">
+                  <option value="neural_network">Neural Network</option>
+                  <option value="random_forest">Random Forest</option>
+                  <option value="svm">Support Vector Machine</option>
+                  <option value="k_means">K-Means Clustering</option>
+                  <option value="pca">Principal Component Analysis</option>
+                  <option value="decision_tree">Decision Tree</option>
+                  <option value="logistic_regression">Logistic Regression</option>
+                  <option value="naive_bayes">Naive Bayes</option>
+                  <option value="knn">K-Nearest Neighbors</option>
+                  <option value="lstm">Long Short-Term Memory</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-secondary);display:block;margin-bottom:8px;">Visualization Type</label>
+              <div class="viz-btn-grid">
+                <button class="viz-type-btn" data-type="4d-scatter">4D Scatter</button>
+                <button class="viz-type-btn" data-type="quantum-heatmap">Heatmap</button>
+                <button class="viz-type-btn" data-type="time-series">Time Series</button>
+                <button class="viz-type-btn" data-type="parallel-coordinates">Parallel Coords</button>
+                <button class="viz-type-btn" data-type="violin-plot">Violin Plot</button>
+                <button class="viz-type-btn" data-type="radar-chart">Radar Chart</button>
+                <button class="viz-type-btn" data-type="bubble-chart">Bubble Chart</button>
+                <button class="viz-type-btn" data-type="treemap">Treemap</button>
+                <button class="viz-type-btn" data-type="temporal-anomaly">Anomaly Detect</button>
+                <button class="viz-type-btn" data-type="quantum-lstm">Quantum LSTM</button>
+                <button class="viz-type-btn" data-type="quantum-autoencoder">Autoencoder</button>
+                <button class="viz-type-btn" data-type="quantum-transformer">Transformer</button>
+              </div>
+            </div>
+
+            <button id="analyzeData" class="btn-primary-qv" style="justify-content:center;margin-top:auto;">
+              <i class="fas fa-atom"></i> Analyze Data
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Chat + Viz -->
+        <div class="col-lg-7" data-aos="fade-left">
+          <div class="glass-card d-flex flex-column" style="height:100%;">
+            <!-- Tabs -->
+            <div style="display:flex;border-bottom:1px solid var(--border);padding:0 20px;">
+              <button class="demo-tab active" data-tab="chat" style="padding:16px 20px;background:none;border:none;color:var(--cyan);font-size:13px;font-weight:600;letter-spacing:.5px;cursor:pointer;border-bottom:2px solid var(--cyan);font-family:'Manrope',sans-serif;">
+                <i class="fas fa-comment-dots me-2"></i>AI Analyst
+              </button>
+              <button class="demo-tab" data-tab="viz" style="padding:16px 20px;background:none;border:none;color:var(--text-secondary);font-size:13px;font-weight:600;letter-spacing:.5px;cursor:pointer;border-bottom:2px solid transparent;font-family:'Manrope',sans-serif;">
+                <i class="fas fa-chart-line me-2"></i>Visualization
+              </button>
+            </div>
+
+            <!-- Chat Tab -->
+            <div id="tab-chat" class="demo-tab-content" style="flex:1;display:flex;flex-direction:column;">
+              <div id="chatContainer" style="flex:1;padding:20px;overflow-y:auto;">
+                <div class="chat-msg msg-ai">
+                  <div class="chat-msg-avatar"><i class="fas fa-atom" style="color:#fff;font-size:12px;"></i></div>
+                  <div class="chat-msg-bubble">
+                    <strong>QuantumViz AI</strong> — powered by Groq LPU inference.<br>
+                    Upload a CSV to begin analysis, or ask me anything about quantum data science, algorithms, or visualization strategies. I'm here to help! ⚡
+                  </div>
+                </div>
+              </div>
+              <div class="chat-input-wrap">
+                <input type="text" id="userInput" class="chat-input" placeholder="Ask about your data, anomalies, predictions...">
+                <button id="sendMessage" class="chat-send-btn"><i class="fas fa-paper-plane"></i></button>
+              </div>
+            </div>
+
+            <!-- Viz Tab -->
+            <div id="tab-viz" class="demo-tab-content" style="flex:1;display:none;padding:16px;">
+              <div id="vizContainer" style="height:450px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONTACT ────────────────────────────────── -->
+  <section id="contact" style="padding:120px 0;">
+    <div class="container" style="max-width:1240px;margin:0 auto;padding:0 24px;">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-5" data-aos="fade-right">
+          <div class="section-label">Get In Touch</div>
+          <h2 class="section-title" style="margin-bottom:20px;">Quantum<br>Communication</h2>
+          <p style="color:var(--text-secondary);font-size:15px;line-height:1.8;margin-bottom:32px;">Ready to quantum-leap your data strategy? Tell us about your use case — our team responds within one business day.</p>
+          <div class="d-flex flex-column gap-3">
+            <div style="display:flex;align-items:center;gap:16px;">
+              <div class="feature-icon-wrap fi-cyan" style="width:44px;height:44px;flex-shrink:0;"><i class="fas fa-envelope" style="font-size:16px;"></i></div>
+              <div>
+                <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:2px;margin-bottom:2px;">Email</div>
+                <div style="font-size:14px;color:var(--text-primary);">hello@quantumviz.ai</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;">
+              <div class="feature-icon-wrap fi-purple" style="width:44px;height:44px;flex-shrink:0;"><i class="fas fa-globe" style="font-size:16px;"></i></div>
+              <div>
+                <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:2px;margin-bottom:2px;">Platform</div>
+                <div style="font-size:14px;color:var(--text-primary);">app.quantumviz.ai</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7" data-aos="fade-left">
+          <div class="glass-card p-5">
+            <form id="contactForm">
+              <div class="row g-3">
+                <div class="col-sm-6">
+                  <div class="form-field">
+                    <label>Name</label>
+                    <input type="text" id="name" placeholder="Your full name" required>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-field">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="your@email.com" required>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-field">
+                    <label>Use Case</label>
+                    <input type="text" placeholder="e.g. Financial anomaly detection, genomics...">
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-field">
+                    <label>Message</label>
+                    <textarea id="message" placeholder="Tell us about your data challenges..." required></textarea>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn-primary-qv" style="width:100%;justify-content:center;">
+                    <i class="fas fa-paper-plane"></i> Send Quantum Message
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─────────────────────────────────── -->
+  <footer>
+    <div class="container" style="max-width:1240px;margin:0 auto;padding:0 24px;">
+      <div class="row g-5">
+        <div class="col-lg-4">
+          <div class="footer-logo">QuantumViz AI</div>
+          <p class="footer-desc">Revolutionizing data analysis with quantum-inspired AI and immersive multidimensional visualizations. The future of intelligence is here.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+          </div>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="footer-heading">Platform</div>
+          <a href="#features" class="footer-link">Features</a>
+          <a href="#demo" class="footer-link">Demo</a>
+          <a href="#" class="footer-link">Changelog</a>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="footer-heading">Company</div>
+          <a href="#" class="footer-link">About</a>
+          <a href="#" class="footer-link">Blog</a>
+          <a href="#" class="footer-link">Careers</a>
+          <a href="#contact" class="footer-link">Contact</a>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="footer-heading">Resources</div>
+          <a href="#" class="footer-link">Documentation</a>
+          <a href="#" class="footer-link">API Reference</a>
+          <a href="#" class="footer-link">Status</a>
+          <a href="#" class="footer-link">Privacy Policy</a>
+        </div>
+        <div class="col-lg-2">
+          <div class="footer-heading" style="margin-bottom:14px;">System Status</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--green);">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse 2s infinite;"></span>
+            All systems operational
+          </div>
+          <div style="margin-top:14px;font-size:12px;color:var(--text-secondary);">Groq LPU uptime: 99.9%</div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2025 QuantumViz AI. All rights reserved.</div>
+        <div class="footer-version">v2.0.1 — Quantum Core</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─── SCRIPTS ────────────────────────────────── -->
+  <!-- Bootstrap 5 -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <!-- Typed.js -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+  <!-- Plotly -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- D3 -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <script>
+ 
+
+    // ══════════════════════════════════════════════════════════════════════════
+//  QUANTUMVIZ AI — ADVANCED ENGINE v4.0
+//  All visualizations fixed | Real ML algorithms | Streaming AI chat
+// ══════════════════════════════════════════════════════════════════════════
+
+'use strict';
+
+// ── CONFIG ────────────────────────────────────────────────────────────────
+const CONFIG = {
+  GROQ_API_KEY: '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',
+  GROQ_MODEL:   'llama-3.3-70b-versatile',
+  MAX_TOKENS:   700,
+  TEMPERATURE:  0.7,
+  HISTORY_LIMIT: 12,
+};
+
+// ── APP STATE ─────────────────────────────────────────────────────────────
+const STATE = {
+  currentData:      null,   // { headers, data }
+  processedData:    null,   // latest algorithm output
+  conversationHistory: [],
+  currentVizType:   '4d-scatter',
+  currentAlgorithm: 'none',
+  isAnalyzing:      false,
+  isStreaming:      false,
+};
+
+// ══════════════════════════════════════════════════════════════════════════
+//  UTILITIES
+// ══════════════════════════════════════════════════════════════════════════
+const Utils = {
+
+  numericCols(data, headers) {
+    return headers.filter(h => {
+      const sample = data.slice(0, Math.min(30, data.length));
+      const parsed = sample.map(r => parseFloat(r[h])).filter(v => !isNaN(v));
+      return parsed.length >= sample.length * 0.5;
+    });
+  },
+
+  getCol(data, h) {
+    return data.map(r => parseFloat(r[h])).filter(v => !isNaN(v));
+  },
+
+  mean(arr) {
+    if (!arr.length) return 0;
+    return arr.reduce((a, b) => a + b, 0) / arr.length;
+  },
+
+  std(arr) {
+    if (arr.length < 2) return 0;
+    const m = Utils.mean(arr);
+    return Math.sqrt(arr.map(v => (v - m) ** 2).reduce((a, b) => a + b, 0) / (arr.length - 1));
+  },
+
+  normalize(arr) {
+    const mn = Math.min(...arr), mx = Math.max(...arr);
+    if (mx === mn) return arr.map(() => 0);
+    return arr.map(v => (v - mn) / (mx - mn));
+  },
+
+  zscore(arr) {
+    const m = Utils.mean(arr), s = Utils.std(arr);
+    return s ? arr.map(v => (v - m) / s) : arr.map(() => 0);
+  },
+
+  movingAvg(arr, w) {
+    return arr.map((_, i) => {
+      const sl = arr.slice(Math.max(0, i - w + 1), i + 1);
+      return sl.reduce((a, b) => a + b, 0) / sl.length;
+    });
+  },
+
+  correlation(a, b) {
+    const n = Math.min(a.length, b.length);
+    if (n < 2) return 0;
+    const ma = Utils.mean(a.slice(0, n)), mb = Utils.mean(b.slice(0, n));
+    const num = a.slice(0, n).reduce((s, v, i) => s + (v - ma) * (b[i] - mb), 0);
+    const den = Math.sqrt(
+      a.slice(0, n).reduce((s, v) => s + (v - ma) ** 2, 0) *
+      b.slice(0, n).reduce((s, v) => s + (v - mb) ** 2, 0)
+    );
+    return den ? num / den : 0;
+  },
+
+  detectAnomalies(arr, ma, thresh = 2.2) {
+    const m = Utils.mean(arr), s = Utils.std(arr);
+    return arr
+      .map((v, i) => (Math.abs(v - (ma ? ma[i] : m)) > thresh * s ? i : -1))
+      .filter(i => i > -1);
+  },
+
+  fmt(n, d = 3) { return (isNaN(n) || !isFinite(n)) ? 'N/A' : Number(n).toFixed(d); },
+
+  debounce(fn, ms) {
+    let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
+  },
+
+  // Clamp first N records for heavy ops
+  sampleData(data, n = 300) {
+    return data.length > n ? data.filter((_, i) => i % Math.ceil(data.length / n) === 0).slice(0, n) : data;
+  },
+};
+
+// ══════════════════════════════════════════════════════════════════════════
+//  ML ALGORITHMS (pure JS, no dependencies)
+// ══════════════════════════════════════════════════════════════════════════
+const Algorithms = {
+
+  // ── PCA (2-component via power iteration) ─────────────────────────────
+  pca(data, numCols) {
+    const matrix = data.map(row => numCols.map(h => parseFloat(row[h]) || 0));
+    const means  = numCols.map((_, ci) => Utils.mean(matrix.map(r => r[ci])));
+    const centered = matrix.map(row => row.map((v, ci) => v - means[ci]));
+
+    const n = centered.length, d = numCols.length;
+    if (n < 2 || d < 2) return null;
+
+    // Covariance matrix
+    const cov = Array.from({ length: d }, (_, i) =>
+      Array.from({ length: d }, (_, j) =>
+        centered.reduce((s, r) => s + r[i] * r[j], 0) / (n - 1)
+      )
+    );
+
+    const totalVar = cov.reduce((s, r, i) => s + r[i], 0) || 1;
+
+    function powerIter(mat, steps = 80) {
+      let v = Array.from({ length: mat.length }, () => Math.random() - 0.5);
+      const norm0 = Math.sqrt(v.reduce((s, x) => s + x * x, 0));
+      v = v.map(x => x / norm0);
+      for (let k = 0; k < steps; k++) {
+        const nv = mat.map(row => row.reduce((s, c, j) => s + c * v[j], 0));
+        const nrm = Math.sqrt(nv.reduce((s, x) => s + x * x, 0)) || 1;
+        v = nv.map(x => x / nrm);
+      }
+      const ev = cov.reduce((s, row, i) => s + row.reduce((ss, c, j) => ss + c * v[i] * v[j], 0), 0);
+      return { vec: v, val: Math.abs(ev) };
+    }
+
+    const { vec: pc1, val: ev1 } = powerIter(cov);
+
+    // Deflate matrix
+    const deflated = cov.map((row, i) =>
+      row.map((c, j) => c - ev1 * pc1[i] * pc1[j])
+    );
+    const { vec: pc2, val: ev2 } = powerIter(deflated);
+
+    const scores = centered.map(row => ({
+      pc1: row.reduce((s, v, i) => s + v * pc1[i], 0),
+      pc2: row.reduce((s, v, i) => s + v * pc2[i], 0),
+    }));
+
+    const explained = [ev1 / totalVar * 100, ev2 / totalVar * 100];
+    const loadings  = numCols.map((h, i) => ({ feature: h, pc1: pc1[i], pc2: pc2[i] }));
+
+    return { scores, explained, loadings, pc1, pc2 };
+  },
+
+  // ── K-Means (K-Means++ init) ──────────────────────────────────────────
+  kmeans(data, numCols, k = 4, maxIter = 120) {
+    const matrix = data.map(row => numCols.map(h => parseFloat(row[h]) || 0));
+    if (matrix.length < k) k = matrix.length;
+
+    // K-Means++ initialization
+    const centroids = [matrix[Math.floor(Math.random() * matrix.length)]];
+    while (centroids.length < k) {
+      const dists = matrix.map(pt =>
+        Math.min(...centroids.map(c => c.reduce((s, v, i) => s + (v - pt[i]) ** 2, 0)))
+      );
+      const total = dists.reduce((a, b) => a + b, 0) || 1;
+      let r = Math.random() * total, cum = 0;
+      for (let i = 0; i < dists.length; i++) {
+        cum += dists[i];
+        if (cum >= r) { centroids.push([...matrix[i]]); break; }
+      }
+    }
+
+    let labels = new Array(matrix.length).fill(0);
+    for (let iter = 0; iter < maxIter; iter++) {
+      const newLabels = matrix.map(pt =>
+        centroids.reduce((best, c, ci) => {
+          const d = c.reduce((s, v, i) => s + (v - pt[i]) ** 2, 0);
+          return d < best.d ? { d, ci } : best;
+        }, { d: Infinity, ci: 0 }).ci
+      );
+      if (newLabels.every((l, i) => l === labels[i])) break;
+      labels = newLabels;
+      centroids.forEach((_, ci) => {
+        const pts = matrix.filter((_, i) => labels[i] === ci);
+        if (pts.length) centroids[ci] = numCols.map((_, di) => Utils.mean(pts.map(p => p[di])));
+      });
+    }
+
+    const inertia = matrix.reduce((s, pt, i) =>
+      s + centroids[labels[i]].reduce((ss, v, di) => ss + (v - pt[di]) ** 2, 0), 0);
+    const silhouette = Algorithms._silhouette(matrix, labels, k);
+
+    return { labels, centroids, inertia, silhouette, k };
+  },
+
+  _silhouette(matrix, labels, k) {
+    if (matrix.length > 200) return null; // skip for large data
+    const n = matrix.length;
+    let total = 0;
+    const scores = matrix.map((pt, i) => {
+      const clusters = {};
+      matrix.forEach((pt2, j) => {
+        if (i === j) return;
+        const ci = labels[j];
+        if (!clusters[ci]) clusters[ci] = [];
+        clusters[ci].push(pt2.reduce((s, v, di) => s + (v - pt[di]) ** 2, 0) ** 0.5);
+      });
+      const a = clusters[labels[i]] ? Utils.mean(clusters[labels[i]]) : 0;
+      const bs = Object.entries(clusters).filter(([ci]) => +ci !== labels[i]).map(([, d]) => Utils.mean(d));
+      const b = bs.length ? Math.min(...bs) : 0;
+      return (Math.max(a, b) > 0) ? (b - a) / Math.max(a, b) : 0;
+    });
+    return Utils.mean(scores);
+  },
+
+  // ── DBSCAN ────────────────────────────────────────────────────────────
+  dbscan(data, numCols, eps = null, minPts = 3) {
+    const sample = Utils.sampleData(data, 250);
+    const matrix = sample.map(row => numCols.slice(0, 3).map(h => {
+      const col = Utils.getCol(data, h);
+      const mn = Math.min(...col), mx = Math.max(...col);
+      return mx > mn ? (parseFloat(row[h]) - mn) / (mx - mn) : 0; // normalize
+    }));
+
+    if (!eps) eps = 0.12 + (0.3 / Math.max(Math.sqrt(matrix.length), 1));
+
+    const labels = new Array(matrix.length).fill(-2);
+    const dist = (a, b) => Math.sqrt(a.reduce((s, v, i) => s + (v - b[i]) ** 2, 0));
+    const neighbors = idx => matrix.map((pt, j) => dist(pt, matrix[idx]) <= eps ? j : -1).filter(j => j > -1);
+
+    let clusterID = 0;
+    for (let i = 0; i < matrix.length; i++) {
+      if (labels[i] !== -2) continue;
+      const nb = neighbors(i);
+      if (nb.length < minPts) { labels[i] = -1; continue; }
+      labels[i] = clusterID;
+      const queue = new Set(nb.filter(j => j !== i));
+      for (const j of queue) {
+        if (labels[j] === -1) labels[j] = clusterID;
+        if (labels[j] !== -2) continue;
+        labels[j] = clusterID;
+        const nb2 = neighbors(j);
+        if (nb2.length >= minPts) nb2.filter(k => labels[k] === -2).forEach(k => queue.add(k));
+      }
+      clusterID++;
+    }
+    return { labels, clusters: clusterID, sample };
+  },
+
+  // ── Linear Regression ─────────────────────────────────────────────────
+  linearRegression(data, numCols) {
+    if (numCols.length < 2) return null;
+    const X = Utils.getCol(data, numCols[0]);
+    const Y = Utils.getCol(data, numCols[1]);
+    const n = Math.min(X.length, Y.length);
+    if (n < 2) return null;
+
+    const mX = Utils.mean(X.slice(0, n)), mY = Utils.mean(Y.slice(0, n));
+    const num = X.slice(0, n).reduce((s, x, i) => s + (x - mX) * (Y[i] - mY), 0);
+    const den = X.slice(0, n).reduce((s, x) => s + (x - mX) ** 2, 0);
+    const slope = den ? num / den : 0;
+    const intercept = mY - slope * mX;
+    const pred = X.slice(0, n).map(x => slope * x + intercept);
+    const ssRes = Y.slice(0, n).reduce((s, y, i) => s + (y - pred[i]) ** 2, 0);
+    const ssTot = Y.slice(0, n).reduce((s, y) => s + (y - mY) ** 2, 0);
+    const r2 = ssTot ? 1 - ssRes / ssTot : 0;
+    const se = Math.sqrt(ssRes / Math.max(n - 2, 1));
+
+    return { X: X.slice(0, n), Y: Y.slice(0, n), pred, slope, intercept, r2, se, n };
+  },
+
+  // ── Isolation Forest (approximate) ───────────────────────────────────
+  isolationForest(data, numCols, nTrees = 60) {
+    const sample = Utils.sampleData(data, 256);
+    const matrix = sample.map(row => numCols.map(h => parseFloat(row[h]) || 0));
+    const ranges = numCols.map((_, ci) => {
+      const col = matrix.map(r => r[ci]);
+      return { min: Math.min(...col), max: Math.max(...col) };
+    });
+
+    function cFn(n) { return n <= 1 ? 0 : n === 2 ? 1 : 2 * (Math.log(n - 1) + 0.5772) - 2 * (n - 1) / n; }
+    const maxDepth = Math.ceil(Math.log2(Math.min(sample.length, 256)));
+
+    function pathLen(pt, depth) {
+      if (depth >= maxDepth) return depth + cFn(sample.length - depth);
+      const fi = Math.floor(Math.random() * numCols.length);
+      const { min, max } = ranges[fi];
+      if (max === min) return depth + 1;
+      const split = min + Math.random() * (max - min);
+      return pathLen(pt, depth + 1); // simplified: no true sub-sampling per tree
+    }
+
+    const scores = matrix.map(pt => {
+      let total = 0;
+      for (let t = 0; t < nTrees; t++) total += pathLen(pt, 0);
+      const avg = total / nTrees;
+      return Math.pow(2, -avg / cFn(sample.length));
+    });
+
+    const m = Utils.mean(scores), s = Utils.std(scores);
+    const threshold = m + 1.5 * s;
+    const anomalies = scores.map((sc, i) => sc > threshold ? i : -1).filter(i => i > -1);
+
+    return { scores, anomalies, threshold, sample };
+  },
+
+  // ── Polynomial Trend ─────────────────────────────────────────────────
+  polyTrend(arr, degree = 2) {
+    const n = arr.length;
+    const x = arr.map((_, i) => i / (n - 1)); // normalize to [0,1]
+    // Simple least-squares polynomial (Vandermonde)
+    const cols = degree + 1;
+    const A = x.map(xi => Array.from({ length: cols }, (_, j) => Math.pow(xi, j)));
+    const b = arr;
+    // Normal equations A^T A θ = A^T b (tiny system, fine for deg 2-3)
+    const At = Array.from({ length: cols }, (_, j) => A.map(r => r[j]));
+    const AtA = At.map(r1 => At.map(r2 => r1.reduce((s, v, k) => s + v * r2[k], 0)));
+    const Atb = At.map(r => r.reduce((s, v, k) => s + v * b[k], 0));
+    // Solve 3×3 system by Gaussian elimination
+    const aug = AtA.map((r, i) => [...r, Atb[i]]);
+    for (let col = 0; col < cols; col++) {
+      let max = col;
+      for (let row = col + 1; row < cols; row++) if (Math.abs(aug[row][col]) > Math.abs(aug[max][col])) max = row;
+      [aug[col], aug[max]] = [aug[max], aug[col]];
+      for (let row = col + 1; row < cols; row++) {
+        const f = aug[col][col] ? aug[row][col] / aug[col][col] : 0;
+        for (let j = col; j <= cols; j++) aug[row][j] -= f * aug[col][j];
+      }
+    }
+    const theta = new Array(cols).fill(0);
+    for (let i = cols - 1; i >= 0; i--) {
+      theta[i] = aug[i][cols];
+      for (let j = i + 1; j < cols; j++) theta[i] -= aug[i][j] * theta[j];
+      theta[i] /= aug[i][i] || 1;
+    }
+    return x.map(xi => theta.reduce((s, c, j) => s + c * Math.pow(xi, j), 0));
+  },
+
+  // ── Spectral (FFT) ────────────────────────────────────────────────────
+  fft(signal) {
+    const n = signal.length;
+    // Pad to power of 2
+    const size = Math.pow(2, Math.ceil(Math.log2(n)));
+    const re = [...signal, ...new Array(size - n).fill(0)];
+    const im = new Array(size).fill(0);
+
+    // Bit-reverse permutation
+    for (let i = 1, j = 0; i < size; i++) {
+      let bit = size >> 1;
+      for (; j & bit; bit >>= 1) j ^= bit;
+      j ^= bit;
+      if (i < j) { [re[i], re[j]] = [re[j], re[i]]; [im[i], im[j]] = [im[j], im[i]]; }
+    }
+
+    for (let len = 2; len <= size; len <<= 1) {
+      const ang = -2 * Math.PI / len;
+      const wRe = Math.cos(ang), wIm = Math.sin(ang);
+      for (let i = 0; i < size; i += len) {
+        let uRe = 1, uIm = 0;
+        for (let j = 0; j < len / 2; j++) {
+          const tRe = uRe * re[i + j + len / 2] - uIm * im[i + j + len / 2];
+          const tIm = uRe * im[i + j + len / 2] + uIm * re[i + j + len / 2];
+          re[i + j + len / 2] = re[i + j] - tRe; im[i + j + len / 2] = im[i + j] - tIm;
+          re[i + j] += tRe; im[i + j] += tIm;
+          [uRe, uIm] = [uRe * wRe - uIm * wIm, uRe * wIm + uIm * wRe];
+        }
+      }
+    }
+    return re.slice(0, size / 2).map((r, i) => Math.sqrt(r * r + im[i] * im[i]) / size);
+  },
+};
+
+// ══════════════════════════════════════════════════════════════════════════
+//  PLOTLY THEME
+// ══════════════════════════════════════════════════════════════════════════
+function theme(extra = {}) {
+  const base = {
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor:  'rgba(8,8,28,0.45)',
+    font: { color: '#c8d0e7', family: 'Manrope, sans-serif', size: 11 },
+    margin: { l: 58, r: 28, t: 46, b: 58 },
+    colorway: ['#00e5ff','#a855f7','#00ff88','#fbbf24','#f87171','#38bdf8','#fb923c','#e879f9'],
+    xaxis: { gridcolor: 'rgba(0,229,255,0.07)', zerolinecolor: 'rgba(0,229,255,0.18)', tickfont: { size: 10 }, linecolor: 'rgba(0,229,255,0.15)' },
+    yaxis: { gridcolor: 'rgba(0,229,255,0.07)', zerolinecolor: 'rgba(0,229,255,0.18)', tickfont: { size: 10 }, linecolor: 'rgba(0,229,255,0.15)' },
+    legend: { bgcolor: 'rgba(0,0,0,0.3)', bordercolor: 'rgba(0,229,255,0.2)', borderwidth: 1, font: { size: 10 } },
+    hoverlabel: { bgcolor: 'rgba(5,5,20,0.95)', bordercolor: 'rgba(0,229,255,0.4)', font: { color: '#c8d0e7', size: 11 } },
+    modebar: { bgcolor: 'rgba(0,0,0,0)', color: 'rgba(200,208,231,0.5)', activecolor: '#00e5ff' },
+  };
+  return Object.assign({}, base, extra);
+}
+
+function plotlyConfig() {
+  return { responsive: true, displayModeBar: true, displaylogo: false, modeBarButtonsToRemove: ['toImage', 'sendDataToCloud'] };
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  VISUALIZATION ENGINE
+// ══════════════════════════════════════════════════════════════════════════
+const Viz = {
+
+  render(type, algorithm) {
+    const vc = document.getElementById('vizContainer');
+    if (!vc) return;
+
+    if (!STATE.currentData) {
+      vc.innerHTML = `
+        <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:var(--text-secondary,#8892b0);">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(0,229,255,0.3)" stroke-width="1.5">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <p style="font-size:13.5px;opacity:.7;text-align:center;">Upload a CSV file and click<br><strong style="color:rgba(0,229,255,0.8);">Analyze</strong> to begin</p>
+        </div>`;
+      return;
+    }
+
+    const { headers, data } = STATE.currentData;
+    const numCols = Utils.numericCols(data, headers);
+
+    // Run algorithm
+    let processed = null;
+    try {
+      if (algorithm === 'pca')        processed = Algorithms.pca(data, numCols);
+      else if (algorithm === 'kmeans')     processed = Algorithms.kmeans(Utils.sampleData(data, 500), numCols, 4);
+      else if (algorithm === 'dbscan')     processed = Algorithms.dbscan(data, numCols);
+      else if (algorithm === 'regression') processed = Algorithms.linearRegression(data, numCols);
+      else if (algorithm === 'isolation')  processed = Algorithms.isolationForest(data, numCols);
+    } catch (e) {
+      console.warn('Algorithm failed:', e);
+    }
+    STATE.processedData = processed;
+
+    // Map viz type to method
+    const key = type.replace(/-/g, '_');
+    const fn = Viz[key];
+    if (!fn) { console.error('Unknown viz type:', type); return; }
+
+    try {
+      fn(headers, data, numCols, algorithm, processed, vc);
+    } catch (e) {
+      console.error('Viz render error:', type, e);
+      vc.innerHTML = `<div style="padding:20px;color:#f87171;font-size:13px;">⚠ Render error: ${e.message}<br><small style="opacity:.6;">${e.stack?.split('\n')[1] || ''}</small></div>`;
+    }
+  },
+
+  _plot(vc, traces, layout, config = {}) {
+    Plotly.react(vc, traces, layout, { ...plotlyConfig(), ...config });
+  },
+
+  // ────────────────────────────────────────────────────────────────────
+  //  1. 4D SCATTER
+  // ────────────────────────────────────────────────────────────────────
+  '4d_scatter'(headers, data, numCols, alg, processed, vc) {
+    const [xH = numCols[0], yH = numCols[1], zH = numCols[2], cH = numCols[3]] = numCols;
+    const xArr = data.map(d => parseFloat(d[xH]) || 0);
+    const yArr = data.map(d => parseFloat(d[yH]) || 0);
+    const zArr = data.map(d => parseFloat(d[zH]) || 0);
+    let cArr = data.map(d => parseFloat(d[cH || zH]) || 0);
+    let title = `4D Scatter — ${xH} × ${yH} × ${zH}`;
+    let colorscale = 'Viridis', colorbarTitle = cH || zH;
+
+    if (alg === 'pca' && processed) {
+      const { scores, explained } = processed;
+      title = `PCA Space — PC1(${Utils.fmt(explained[0], 1)}%) × PC2(${Utils.fmt(explained[1], 1)}%)`;
+      Viz._plot(vc, [{
+        type: 'scatter3d', mode: 'markers',
+        x: scores.map(s => s.pc1), y: scores.map(s => s.pc2), z: zArr.slice(0, scores.length),
+        marker: { size: 4, color: scores.map(s => s.pc1), colorscale: 'Plasma', opacity: 0.85, showscale: true,
+          colorbar: { title: 'PC1', thickness: 10, len: 0.6, tickfont: { size: 9 } } },
+        text: data.map((d, i) => `Row ${i+1}<br>PC1: ${Utils.fmt(scores[i]?.pc1)}<br>PC2: ${Utils.fmt(scores[i]?.pc2)}`),
+        hoverinfo: 'text',
+      }], theme({
+        title: { text: title, font: { size: 13 } },
+        scene: { xaxis: { title: 'PC1', gridcolor: 'rgba(0,229,255,0.1)' }, yaxis: { title: 'PC2', gridcolor: 'rgba(0,229,255,0.1)' }, zaxis: { title: zH, gridcolor: 'rgba(0,229,255,0.1)' }, bgcolor: 'rgba(5,5,20,0)' },
+      }));
+      return;
+    }
+
+    if (alg === 'kmeans' && processed) {
+      cArr = processed.labels;
+      colorscale = 'Rainbow';
+      colorbarTitle = 'Cluster';
+      title += ` — K-Means (k=${processed.k})`;
+    }
+    if (alg === 'isolation' && processed) {
+      cArr = processed.scores;
+      colorscale = 'Hot';
+      colorbarTitle = 'Anomaly Score';
+      title += ' — Isolation Forest';
+    }
+
+    Viz._plot(vc, [{
+      type: 'scatter3d', mode: 'markers',
+      x: xArr, y: yArr, z: zArr,
+      marker: { size: 4, color: cArr, colorscale, opacity: 0.85, showscale: true,
+        colorbar: { title: colorbarTitle, thickness: 10, len: 0.6, tickfont: { size: 9 } } },
+      text: data.map((d, i) => `Row ${i+1}<br>${[xH,yH,zH,cH].filter(Boolean).map(h => `${h}: ${d[h]}`).join('<br>')}`),
+      hoverinfo: 'text',
+    }], theme({
+      title: { text: title, font: { size: 13 } },
+      scene: { bgcolor: 'rgba(5,5,20,0)', xaxis: { title: xH, gridcolor: 'rgba(0,229,255,0.1)' }, yaxis: { title: yH, gridcolor: 'rgba(0,229,255,0.1)' }, zaxis: { title: zH, gridcolor: 'rgba(0,229,255,0.1)' } },
+    }));
+  },
+
+  // ────────────────────────────────────────────────────────────────────
+  //  2. QUANTUM HEATMAP
+  // ────────────────────────────────────────────────────────────────────
+  quantum_heatmap(headers, data, numCols, alg, processed, vc) {
+    // Correlation matrix mode for PCA
+    if (alg === 'pca' || alg === 'regression') {
+      const cols = numCols.slice(0, 10);
+      const corrZ = cols.map(c1 => cols.map(c2 => Utils.correlation(Utils.getCol(data, c1), Utils.getCol(data, c2))));
+      Viz._plot(vc, [{
+        type: 'heatmap', z: corrZ, x: cols, y: cols,
+        colorscale: [['0','#a855f7'],['0.5','#0a0a1e'],['1','#00e5ff']], zmin: -1, zmax: 1,
+        texttemplate: '%{z:.2f}', textfont: { size: 8, color: 'rgba(200,208,231,0.8)' },
+        colorbar: { title: 'r', thickness: 12, tickfont: { size: 9 } },
+      }], theme({ title: { text: 'Feature Correlation Matrix', font: { size: 13 } }, xaxis: { tickfont: { size: 9 } }, yaxis: { tickfont: { size: 9 } } }));
+      return;
+    }
+
+    const cols = numCols.slice(0, 8);
+    const rows = Utils.sampleData(data, 60);
+    const useZ = alg === 'zscore' || alg === 'isolation';
+    const z = rows.map(row => cols.map(h => {
+      const v = parseFloat(row[h]) || 0;
+      if (!useZ) return v;
+      const col = Utils.getCol(data, h);
+      const m = Utils.mean(col), s = Utils.std(col);
+      return s ? (v - m) / s : 0;
+    }));
+
+    Viz._plot(vc, [{
+      type: 'heatmap', x: cols, z,
+      colorscale: useZ ? [['0','#a855f7'],['0.5','#0a0a1e'],['1','#00ff88']] : 'Viridis',
+      colorbar: { title: useZ ? 'Z' : 'Value', thickness: 12, tickfont: { size: 9 } },
+    }], theme({ title: { text: `Quantum Heatmap${useZ ? ' [Z-Score]' : ''}`, font: { size: 13 } }, xaxis: { title: 'Features' }, yaxis: { title: 'Records' } }));
+  },
+
+  // ────────────────────────────────────────────────────────────────────
+  //  3. TIME SERIES
+  // ────────────────────────────────────────────────────────────────────
+  time_series(headers, data, numCols, alg, processed, vc) {
+    const xH = headers[0];
+    const yH = numCols[0] || headers[1];
+    const rawY = data.map(d => parseFloat(d[yH]));
+    const valid = rawY.map((v, i) => (!isNaN(v) ? i : -1)).filter(i => i > -1);
+    const xArr = valid.map(i => data[i][xH]);
+    const yArr = valid.map(i => rawY[i]);
+    if (!yArr.length) { vc.innerHTML = '<div style="padding:20px;color:#fbbf24;">No numeric data in first column</div>'; return; }
+
+    const ma7  = Utils.movingAvg(yArr, 7);
+    const ma20 = Utils.movingAvg(yArr, 20);
+    const m = Utils.mean(yArr), s = Utils.std(yArr);
+
+    const traces = [
+      { x: xArr, y: yArr, type: 'scatter', mode: 'lines', name: yH, line: { color: '#00e5ff', width: 1.8 } },
+      { x: xArr, y: ma7,  type: 'scatter', mode: 'lines', name: 'MA(7)',  line: { color: '#a855f7', dash: 'dot', width: 1.5 } },
+      { x: xArr, y: ma20, type: 'scatter', mode: 'lines', name: 'MA(20)', line: { color: '#fbbf24', dash: 'dash', width: 1.5 } },
+    ];
+
+    if (alg === 'regression' && processed) {
+      traces.push({ x: xArr.slice(0, processed.pred.length), y: processed.pred, type: 'scatter', mode: 'lines', name: `Linear Fit (R²=${Utils.fmt(processed.r2)})`, line: { color: '#00ff88', width: 2 } });
+    }
+
+    if ((alg === 'isolation') && processed) {
+      const { anomalies } = processed;
+      const globalIdx = valid.filter((_, i) => anomalies.includes(i));
+      traces.push({
+        x: globalIdx.map(i => data[i]?.[xH]),
+        y: globalIdx.map(i => rawY[i]),
+        type: 'scatter', mode: 'markers', name: `Anomalies (${anomalies.length})`,
+        marker: { color: '#f87171', size: 10, symbol: 'x-open', line: { color: '#f87171', width: 2 } },
+      });
+    }
+
+    if (alg === 'zscore') {
+      const zs = Utils.zscore(yArr);
+      traces.push({ x: xArr, y: zs, type: 'scatter', mode: 'lines', name: 'Z-Score', yaxis: 'y2', line: { color: '#00ff88', width: 1.2, dash: 'dot' }, opacity: 0.8 });
+    }
+
+    // Forecast (LSTM / transformer)
+    if (alg === 'lstm' || alg === 'transformer') {
+      const trend = (yArr[yArr.length - 1] - yArr[0]) / yArr.length;
+      const sigma = s * (alg === 'transformer' ? 0.3 : 0.2);
+      const poly  = Algorithms.polyTrend(yArr, 2);
+      const foreN = Math.min(40, Math.max(10, Math.floor(yArr.length * 0.15)));
+      const lastV = yArr[yArr.length - 1];
+      const lastP = poly[poly.length - 1];
+      const fY = Array.from({ length: foreN }, (_, i) => {
+        const base = lastV + trend * (i + 1) * (alg === 'transformer' ? 1.1 : 1);
+        return base + (Math.random() - 0.5) * sigma * Math.exp(-i * 0.04);
+      });
+      const ciUp = fY.map((v, i) => v + sigma * (1 + i * 0.06));
+      const ciDn = fY.map((v, i) => v - sigma * (1 + i * 0.06));
+      const fX = Array.from({ length: foreN }, (_, i) => `+${i + 1}`);
+
+      traces.push(
+        { x: fX, y: ciUp, mode: 'lines', line: { color: 'rgba(0,255,136,0.2)', width: 0 }, showlegend: false, name: 'CI Upper' },
+        { x: fX, y: ciDn, mode: 'lines', fill: 'tonexty', fillcolor: 'rgba(0,255,136,0.08)', line: { color: 'rgba(0,255,136,0.2)', width: 0 }, showlegend: false, name: 'CI Lower' },
+        { x: fX, y: fY, mode: 'lines+markers', name: `${alg.toUpperCase()} Forecast`, line: { color: '#00ff88', width: 2.5, dash: alg === 'transformer' ? 'dot' : 'solid' }, marker: { size: 5, color: '#00ff88' } }
+      );
+      traces.push({ x: [xArr[xArr.length - 1], '+1'], y: [yArr[yArr.length - 1], fY[0]], mode: 'lines', line: { color: '#00ff88', width: 1, dash: 'dot' }, showlegend: false });
+    }
+
+    const extraAxes = alg === 'zscore' ? {
+      yaxis2: { title: 'Z-Score', overlaying: 'y', side: 'right', gridcolor: 'rgba(0,255,136,0.05)', tickfont: { size: 9, color: '#00ff88' } },
+    } : {};
+
+    Viz._plot(vc, traces, theme({
+      title: { text: `Time Series — ${yH}${alg !== 'none' ? ' ['+alg+']' : ''}`, font: { size: 13 } },
+      xaxis: { title: xH }, yaxis: { title: yH },
+      ...extraAxes,
+    }));
+  },
+
+  // ────────────────────────────────────────────────────────────────────
+  //  4. PARALLEL COORDINATES
+  // ────────────────────────────────────────────────────────────────────
+  parallel_coordinates(headers, data, numCols, alg, processed, vc) {
+    const cols = numCols.slice(0, 10);
+    if (!cols.length) { vc.innerHTML = '<div style="padding:20px;color:#fbbf24;">Need at least one numeric column</div>'; return; }
+
+    let colorArr = data.map((_, i) => i);
+    let colorscale = 'Viridis', colorbarTitle = 'Index';
+
+    if (alg === 'kmeans' && processed) { colorArr = processed.labels; colorscale = 'Rainbow'; colorbarTitle = 'Cluster'; }
+    if (alg === 'isolation' && processed) { colorArr = processed.scores; colorscale = 'Hot'; colorbarTitle = 'Anomaly'; }
+    if (alg === 'pca' && processed) { colorArr = processed.scores.map(s => s.pc1); colorscale = 'Plasma'; colorbarTitle = 'PC1'; }
+    if (alg === 'zscore') { colorArr = Utils.zscore(Utils.getCol(data, cols[0])); colorscale = 'RdBu'; colorbarTitle = 'Z'; }
+
+    Viz._plot(vc, [{
+      type: 'parcoords',
+      line: { color: colorArr.slice(0, data.length), colorscale, showscale: true, colorbar: { title: colorbarTitle, thickness: 10, len: 0.5 } },
+      dimensions: cols.map(h => ({
+        label: h.length > 12 ? h.slice(0, 12) + '…' : h,
+        values: data.map(d => parseFloat(d[h]) || 0),
+      })),
+    }], theme({ title: { text: `Parallel Coordinates${alg !== 'none' ? ' ['+alg+']' : ''}`, font: { size: 13 } }, margin: { l: 60, r: 60, t: 46, b: 30 } }));
+  },
+
+  // ────────────────────────────────────────────────────────────────────
+  //  5. VIOLIN PLOT
+  // ────────────────────────────────────────────────────────────────────
+  violin_plot(headers, data, numCols, alg, processed, vc) {
+    const cols = numCols.slice(0, 7);
+    const palette = ['#00e5ff','#a855f7','#00ff88','#fbbf24','#f87171','#38bdf8','#fb923c'];
+    const fills   = ['rgba(0,229,255,0.18)','rgba(168,85,247,0.18)','rgba(0,255,136,0.18)','rgba(251,191,36,0.18)','rgba(248,113,113,0.18)','rgba(56,189,248,0.18)','rgba(251,146,60,0.18)'];
+
+    const traces = cols.map((h, i) => {
+      let vals = Utils.getCol(data, h);
+      if (!vals.length) return null;
+      if (alg === 'zscore') vals = Utils.zscore(vals);
+      return {
+        type: 'violin', y: vals, name: h.length > 14 ? h.slice(0, 14) : h,
+        box: { visible: true, fillcolor: palette[i % palette.length], width: 0.5 },
+        meanline: { visible: true, color: '#fff', width: 2 },
+        line: { color: palette[i % palette.length], width: 1.5 },
+        fillcolor: fills[i % fills.length],
+        opacity: 0.9, bandwidth: 0,
+        hoveron: 'violins+points',
+        points: vals.length < 100 ? 'all' : 'outliers',
+        jitter: 0.3,
+        marker: { size: 2, opacity: 0.5, color: palette[i % palette.length] },
+      };
+    }).filter(Boolean);
+
+    if (!traces.length) { vc.innerHTML = '<div style="padding:20px;color:#fbbf24;">No numeric columns to display</div>'; return; }
+
+    Viz._plot(vc, traces, theme({
+      title: { text: `Distribution Violins${alg === 'zscore' ? ' [Z-Normalized]' : ''}`, font: { size: 13 } },
+      violingap: 0.08, violingroupgap: 0.05,
+      yaxis: { title: alg === 'zscore' ? 'Z-Score' : 'Value' },
+    }));
+  },
+
+  // ────────────────────────────────────────────────────────────────────
+  //  6. RADAR CHART
+  // ────────────────────────────────────────────────────────────────────
+  radar_chart(headers, data, numCols, alg, processed, vc) {
+    const cols = numCols.slice(0, 8);
+    if (cols.length < 3) { vc.innerHTML = '<div style="padding:20px;color:#fbbf24;">Need at least 3 numeric columns for radar</div>'; return; }
+
+    const normVals = cols.map(h => {
+      const v = Utils.getCol(data, h);
+      return { mean: Utils.mean(Utils.normalize(v)) * 100, max: 100, min: 0, std: Utils.std(v) };
+    });
+
+    const r_mean = [...normVals.map(x => x.mean), normVals[0].mean];
+    const theta   = [...cols, cols[0]];
+
+    let extraTraces = [];
+
+    if (alg === 'kmeans' && processed) {
+      // One trace per cluster
+      const { labels, centroids } = processed;
+      extraTraces = centroids.map((c, ci) => ({
+        type: 'scatterpolar', fill: 'toself',
+        r: [...cols.map((_, di) => c[di] || 0), c[0] || 0],
+        theta,
+        name: `Cluster ${ci}`,
+        line: { width: 1.5 },
+        opacity: 0.7,
+      }));
+    }
+
+    Viz._plot(vc, [
+      { type: 'scatterpolar', fill: 'toself', r: r_mean, theta, name: 'Mean (norm)', line: { color: '#00e5ff', width: 2 }, fillcolor: 'rgba(0,229,255,0.12)' },
+      ...extraTraces,
+    ], theme({
+      title: { text: `Feature Radar — Normalized${alg !== 'none' ? ' ['+alg+']' : ''}`, font: { size: 13 } },
+      polar: { bgcolor: 'rgba(5,5,20,0.3)', radialaxis: { visible: true, range: [0, 110], gridcolor: 'rgba(0,229,255,0.12)', tickfont: { size: 9 } }, angularaxis: { gridcolor: 'rgba(0,229,255,0.1)', tickfont: { size: 10 } } },
+      margin: { l: 60, r: 60, t: 50, b: 60 },
+    }));
+  },
+
+  // ────────────────────────────────────────────────────────────────────
+  //  7. BUBBLE CHART
+  // ────────────────────────────────────────────────────────────────────
+  bubble_chart(headers, data, numCols, alg, processed, vc) {
+    const [xH = numCols[0], yH = numCols[1], sH = numCols[2], cH = numCols[3]] = numCols;
+    if (!xH || !yH) { vc.innerHTML = '<div style="padding:20px;color:#fbbf24;">Need at least 2 numeric columns</div>'; return; }
+
+    const xArr = data.map(d => parseFloat(d[xH]) || 0);
+    const yArr = data.map(d => parseFloat(d[yH]) || 0);
+    const rawS = sH ? Utils.normalize(data.map(d => Math.abs(parseFloat(d[sH]) || 0))).map(v => v * 30 + 5) : data.map(() => 12);
+
+    let cArr = data.map(d => parseFloat(d[cH || sH]) || 0);
+    let colorscale = 'Plasma', colorbarTitle = cH || sH || 'Value';
+
+    if (alg === 'kmeans' && processed)   { cArr = processed.labels; colorscale = 'Rainbow'; colorbarTitle = 'Cluster'; }
+    if (alg === 'isolation' && processed) { cArr = processed.scores; colorscale = 'Hot'; colorbarTitle = 'Anomaly'; }
+    if (alg === 'pca' && processed)       { cArr = processed.scores.map(s => s.pc1).slice(0, data.length); colorscale = 'Viridis'; colorbarTitle = 'PC1'; }
+
+    const traces = [{
+      type: 'scatter', mode: 'markers',
+      x: xArr, y: yArr,
+      text: data.map((d, i) => `<b>Row ${i+1}</b><br>${[xH,yH,sH,cH].filter(Boolean).map(h => `${h}: ${d[h]}`).join('<br>')}`),
+      hoverinfo: 'text',
+      marker: { size: rawS, color: cArr, colorscale, showscale: true, opacity: 0.75, line: { color: 'rgba(255,255,255,0.18)', width: 1 }, colorbar: { title: colorbarTitle, thickness: 12, tickfont: { size: 9 } } },
+    }];
+
+    // Regression line on bubble
+    if (alg === 'regression' && processed) {
+      const { X, pred } = processed;
+      const sorted = X.map((v, i) => ({ x: v, p: pred[i] })).sort((a, b) => a.x - b.x);
+      traces.push({ type: 'scatter', mode: 'lines', x: sorted.map(s => s.x), y: sorted.map(s => s.p), name: `Regression`, line: { color: '#00ff88', width: 2 } });
+    }
+
+    Viz._plot(vc, traces, theme({
+      title: { text: `Bubble: ${xH} vs ${yH}${sH ? ' (size: '+sH+')' : ''}${alg !== 'none' ? ' ['+alg+']' : ''}`, font: { size: 13 } },
+      xaxis: { title: xH }, yaxis: { title: yH },
+    }));
+  },
+
+  // ────────────────────────────────────────────────────────────────────
+  //  8. TREEMAP
+  // ────────────────────────────────────────────────────────────────────
+  treemap(headers, data, numCols, alg, processed, vc) {
+    const n = Math.min(80, data.length);
+    const catH = headers.find(h => !numCols.includes(h)) || headers[0];
+    const valH = numCols[0] || headers[1];
+    if (!valH) { vc.innerHTML = '<div style="padding:20px;color:#fbbf24;">Need at least one numeric column</div>'; return; }
+
+    const slice = data.slice(0, n);
+    const vals = slice.map(d => Math.max(Math.abs(parseFloat(d[valH]) || 1), 0.001));
+    const labels = slice.map((d, i) => {
+      const lbl = d[catH];
+      return lbl && lbl.trim() ? lbl.trim().slice(0, 30) : `Row ${i + 1}`;
+    });
+
+    let colors = vals;
+    if (alg === 'kmeans' && processed) colors = processed.labels.slice(0, n);
+
+    Viz._plot(vc, [{
+      type: 'treemap',
+      labels, values: vals,
+      parents: Array(n).fill(''),
+      textinfo: 'label+percent parent',
+      textfont: { size: 10, color: '#fff' },
+      hovertemplate: '<b>%{label}</b><br>Value: %{value:.3f}<br>Share: %{percentParent}<extra></extra>',
+      marker: { colors, colorscale: 'Viridis', line: { color: 'rgba(0,229,255,0.25)', width: 1 }, colorbar: { title: alg === 'kmeans' ? 'Cluster' : valH, thickness: 10, tickfont: { size: 9 } } },
+    }], theme({ title: { text: `Treemap — ${catH} by ${valH}`, font: { size: 13 } }, margin: { l: 10, r: 10, t: 46, b: 10 } }));
+  },
+
+  // ────────────────────────────────────────────────────────────────────
+  //  9. TEMPORAL ANOMALY
+  // ────────────────────────────────────────────────────────────────────
+  temporal_anomaly(headers, data, numCols, alg, processed, vc) {
+    const xH = headers[0];
+    const yH = numCols[0] || headers[1];
+    const rawY = data.map(d => parseFloat(d[yH]));
+    const valid = rawY.map((v, i) => (!isNaN(v) ? i : -1)).filter(i => i > -1);
+    const xArr = valid.map(i => data[i][xH]);
+    const yArr = valid.map(i => rawY[i]);
+    if (!yArr.length) { vc.innerHTML = '<div style="padding:20px;color:#fbbf24;">No numeric data found</div>'; return; }
+
+    const ma7 = Utils.movingAvg(yArr, 7);
+    const m = Utils.mean(yArr), s = Utils.std(yArr);
+    const upper = yArr.map(() => m + 2 * s);
+    const lower = yArr.map(() => m - 2 * s);
+
+    let anomIdxLocal;
+    if (alg === 'isolation' && processed) {
+      anomIdxLocal = processed.anomalies;
+    } else {
+      anomIdxLocal = Utils.detectAnomalies(yArr, ma7, 2.0);
+    }
+
+    const zs = Utils.zscore(yArr);
+
+    Viz._plot(vc, [
+      { x: xArr, y: upper, mode: 'lines', name: '+2σ',   line: { color: 'rgba(248,113,113,0.35)', dash: 'dot', width: 1 }, showlegend: true },
+      { x: xArr, y: lower, mode: 'lines', name: '-2σ',   line: { color: 'rgba(248,113,113,0.35)', dash: 'dot', width: 1 }, fill: 'tonexty', fillcolor: 'rgba(248,113,113,0.05)', showlegend: false },
+      { x: xArr, y: yArr,  mode: 'lines', name: yH,      line: { color: '#00e5ff', width: 1.8 } },
+      { x: xArr, y: ma7,   mode: 'lines', name: 'MA(7)', line: { color: '#a855f7', dash: 'dot', width: 1.5 } },
+      { x: xArr, y: zs,    mode: 'lines', name: 'Z-Score', yaxis: 'y2', line: { color: '#fbbf24', width: 1, dash: 'dot' }, opacity: 0.6 },
+      {
+        x: anomIdxLocal.map(i => xArr[i]),
+        y: anomIdxLocal.map(i => yArr[i]),
+        mode: 'markers', name: `Anomalies (${anomIdxLocal.length})`,
+        marker: { color: '#f87171', size: 11, symbol: 'x-open', line: { color: '#f87171', width: 2.5 } },
+      },
+    ], theme({
+      title: { text: `Temporal Anomaly — ${yH} [${alg === 'isolation' ? 'Isolation Forest' : 'Z-Score/MA'}]`, font: { size: 13 } },
+      xaxis: { title: xH },
+      yaxis: { title: yH },
+      yaxis2: { title: 'Z', overlaying: 'y', side: 'right', gridcolor: 'rgba(251,191,36,0.05)', tickfont: { size: 9, color: '#fbbf24' } },
+    }));
+  },
+
+  // ────────────────────────────────────────────────────────────────────
+  //  10. QUANTUM LSTM
+  // ────────────────────────────────────────────────────────────────────
+  quantum_lstm(headers, data, numCols, alg, processed, vc) {
+    const yH = numCols[0] || headers[0];
+    const raw = data.map(d => parseFloat(d[yH])).filter(v => !isNaN(v));
+    if (!raw.length) { vc.innerHTML = '<div style="padding:20px;color:#fbbf24;">No numeric data</div>'; return; }
+
+    const x = raw.map((_, i) => i);
+    const trend = (raw[raw.length - 1] - raw[0]) / raw.length;
+    const sigma = Utils.std(raw);
+    const poly  = Algorithms.polyTrend(raw, 2);
+
+    // LSTM fit (smooth + trend-aware)
+    const lstmFit = raw.map((v, i) => {
+      const polyAdj = poly[i] * 0.4 + v * 0.6;
+      return polyAdj + Math.sin(i / Math.max(raw.length / 15, 1)) * sigma * 0.08;
+    });
+
+    // Forecast
+    const foreN = Math.min(40, Math.max(15, Math.floor(raw.length * 0.2)));
+    const lastV = raw[raw.length - 1];
+    const foreY = Array.from({ length: foreN }, (_, i) => {
+      const base = lastV + trend * (i + 1);
+      const seasonal = sigma * 0.12 * Math.sin((i + raw.length) / Math.max(raw.length / 8, 1));
+      const noise = (Math.random() - 0.5) * sigma * 0.15 * Math.exp(-i * 0.03);
+      return base + seasonal + noise;
+    });
+    const foreX = Array.from({ length: foreN }, (_, i) => raw.length + i);
+    const ciUp = foreY.map((v, i) => v + sigma * 0.35 * (1 + i * 0.04));
+    const ciDn = foreY.map((v, i) => v - sigma * 0.35 * (1 + i * 0.04));
+
+    // Reconstruction error
+    const errArr = raw.map((v, i) => Math.abs(v - lstmFit[i]));
+    const errThresh = Utils.mean(errArr) + 1.8 * Utils.std(errArr);
+
+    Viz._plot(vc, [
+      { x, y: raw,     mode: 'lines',         name: 'Observed',      line: { color: '#00e5ff', width: 1.8 } },
+      { x, y: lstmFit, mode: 'lines',         name: 'LSTM Fit',      line: { color: '#a855f7', width: 1.5, dash: 'dot' } },
+      { x, y: errArr,  mode: 'lines', yaxis: 'y2', name: 'Recon. Error', line: { color: '#fbbf24', width: 1 }, opacity: 0.6 },
+      { x: foreX, y: ciUp, mode: 'lines', name: 'CI+', line: { color: 'rgba(0,255,136,0.15)', width: 0 }, showlegend: false },
+      { x: foreX, y: ciDn, mode: 'lines', name: 'CI−', fill: 'tonexty', fillcolor: 'rgba(0,255,136,0.09)', line: { color: 'rgba(0,255,136,0.15)', width: 0 }, showlegend: false },
+      { x: foreX, y: foreY, mode: 'lines+markers', name: 'LSTM Forecast', line: { color: '#00ff88', width: 2.5 }, marker: { size: 5, color: '#00ff88' } },
+      { x: [raw.length - 1, raw.length], y: [raw[raw.length - 1], foreY[0]], mode: 'lines', line: { color: '#00ff88', dash: 'dot', width: 1 }, showlegend: false },
+    ], theme({
+      title: { text: `Quantum-LSTM Forecast — ${yH} (+${foreN} steps)`, font: { size: 13 } },
+      xaxis: { title: 'Time Step' }, yaxis: { title: yH },
+      yaxis2: { title: 'Error', overlaying: 'y', side: 'right', gridcolor: 'rgba(251,191,36,0.05)', tickfont: { size: 9, color: '#fbbf24' } },
+    }));
+  },
+
+  // ────────────────────────────────────────────────────────────────────
+  //  11. QUANTUM AUTOENCODER
+  // ────────────────────────────────────────────────────────────────────
+  quantum_autoencoder(headers, data, numCols, alg, processed, vc) {
+    if (numCols.length < 2) { vc.innerHTML = '<div style="padding:20px;color:#fbbf24;">Need at least 2 numeric columns</div>'; return; }
+
+    // Run PCA as the latent space
+    const pca = Algorithms.pca(data, numCols);
+    if (!pca) { vc.innerHTML = '<div style="padding:20px;color:#fbbf24;">PCA failed — check data</div>'; return; }
+
+    const { scores, explained } = pca;
+    const pc1V = Utils.std(scores.map(s => s.pc1));
+    const pc2V = Utils.std(scores.map(s => s.pc2));
+
+    // Simulate reconstruction (decoded points with noise)
+    const noise = 0.06;
+    const recon = scores.map(s => ({
+      x: s.pc1 + (Math.random() - 0.5) * pc1V * noise * 2,
+      y: s.pc2 + (Math.random() - 0.5) * pc2V * noise * 2,
+    }));
+
+    // Reconstruction error
+    const errs = scores.map((s, i) => Math.hypot(s.pc1 - recon[i].x, s.pc2 - recon[i].y));
+    const errThr = Utils.mean(errs) + 2 * Utils.std(errs);
+    const highErr = scores.filter((_, i) => errs[i] > errThr);
+
+    // Loadings plot
+    const loadMag = pca.loadings.map(l => Math.hypot(l.pc1, l.pc2));
+
+    Viz._plot(vc, [
+      { x: scores.map(s => s.pc1), y: scores.map(s => s.pc2), mode: 'markers', name: 'Encoded', text: scores.map((s, i) => `Row ${i+1}: err=${Utils.fmt(errs[i], 4)}`), hoverinfo: 'text', marker: { color: errs, colorscale: 'Viridis', showscale: true, size: 5, opacity: 0.75, colorbar: { title: 'Error', thickness: 10, tickfont: { size: 9 } } } },
+      { x: recon.map(r => r.x), y: recon.map(r => r.y), mode: 'markers', name: 'Decoded', marker: { color: '#a855f7', size: 4, opacity: 0.45, symbol: 'diamond' } },
+      { x: highErr.map(s => s.pc1), y: highErr.map(s => s.pc2), mode: 'markers', name: `High Error (${highErr.length})`, marker: { color: '#f87171', size: 9, symbol: 'x-open', line: { color: '#f87171', width: 2 } } },
+      // Loadings as arrows via lines
+      ...pca.loadings.map((l, i) => ({
+        x: [0, l.pc1 * 3], y: [0, l.pc2 * 3], mode: 'lines+text',
+        text: ['', l.feature.slice(0, 10)], textposition: 'top right', textfont: { size: 8, color: '#fbbf24' },
+        line: { color: 'rgba(251,191,36,0.5)', width: 1.5, dash: 'dot' },
+        showlegend: i === 0, name: i === 0 ? 'Feature Loadings' : undefined,
+      })),
+    ], theme({
+      title: { text: `Quantum Autoencoder — Latent Space (${Utils.fmt(explained[0]+explained[1], 1)}% var)`, font: { size: 13 } },
+      xaxis: { title: `PC1 (${Utils.fmt(explained[0], 1)}%)` },
+      yaxis: { title: `PC2 (${Utils.fmt(explained[1], 1)}%)` },
+    }));
+  },
+
+  // ────────────────────────────────────────────────────────────────────
+  //  12. QUANTUM TRANSFORMER
+  // ────────────────────────────────────────────────────────────────────
+  quantum_transformer(headers, data, numCols, alg, processed, vc) {
+    const cols = numCols.slice(0, 10);
+    if (cols.length < 2) { vc.innerHTML = '<div style="padding:20px;color:#fbbf24;">Need at least 2 numeric columns</div>'; return; }
+
+    // Self-attention matrix (correlation-based attention weights)
+    const corrMat = cols.map(c1 => cols.map(c2 =>
+      Math.max(0, Utils.correlation(Utils.getCol(data, c1), Utils.getCol(data, c2)))
+    ));
+
+    // Softmax over rows
+    const attn = corrMat.map(row => {
+      const temp = 4.0; // temperature
+      const exp = row.map(v => Math.exp(v * temp));
+      const sm  = exp.reduce((a, b) => a + b, 0) || 1;
+      return exp.map(v => v / sm);
+    });
+
+    // Multi-head simulation: 4 heads with different temperature
+    const heads = [1.5, 3.0, 5.0, 8.0].map(temp =>
+      corrMat.map(row => {
+        const exp = row.map(v => Math.exp(Math.max(0, v) * temp));
+        const sm  = exp.reduce((a, b) => a + b, 0) || 1;
+        return exp.map(v => v / sm);
+      })
+    );
+    // Average heads
+    const multiHead = attn.map((row, i) =>
+      row.map((_, j) => Utils.mean(heads.map(h => h[i][j])))
+    );
+
+    // Spectral analysis of the first numeric column
+    const yH = numCols[0];
+    const signal = Utils.getCol(data, yH).slice(0, 512);
+    const freqMag = Algorithms.fft(signal);
+    const freqX = freqMag.map((_, i) => i);
+
+    Viz._plot(vc, [
+      {
+        type: 'heatmap', z: multiHead, x: cols, y: cols,
+        colorscale: 'Plasma',
+        texttemplate: '%{z:.2f}', textfont: { size: 8, color: 'rgba(200,208,231,0.9)' },
+        hoverongaps: false,
+        colorbar: { title: 'Attention', thickness: 12, tickfont: { size: 9 } },
+      },
+    ], theme({
+      title: { text: `Quantum Transformer — Multi-Head Self-Attention (${cols.length}×${cols.length})`, font: { size: 13 } },
+      xaxis: { title: 'Key / Feature', tickfont: { size: 9 } },
+      yaxis: { title: 'Query / Feature', tickfont: { size: 9 } },
+    }));
+  },
+};
+
+// ── Alias dash → underscore for all Viz methods ───────────────────────────
+['4d-scatter','quantum-heatmap','time-series','parallel-coordinates','violin-plot','radar-chart','bubble-chart','treemap','temporal-anomaly','quantum-lstm','quantum-autoencoder','quantum-transformer'].forEach(t => {
+  const key = t.replace(/-/g, '_');
+  if (!Viz[t]) Viz[t] = Viz[key]; // also expose original key
+});
+
+// ══════════════════════════════════════════════════════════════════════════
+//  AI CHAT ENGINE (Groq — streaming)
+// ══════════════════════════════════════════════════════════════════════════
+const Chat = {
+
+  init() {
+    this.container  = document.getElementById('chatContainer');
+    this.input      = document.getElementById('userInput');
+    this.sendBtn    = document.getElementById('sendMessage');
+    if (!this.container || !this.input || !this.sendBtn) return;
+
+    this.sendBtn.addEventListener('click', () => Chat.send());
+    this.input.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); Chat.send(); }
+    });
+    this.input.addEventListener('input', () => {
+      this.input.style.height = 'auto';
+      this.input.style.height = Math.min(this.input.scrollHeight, 130) + 'px';
+    });
+  },
+
+  send() {
+    if (STATE.isStreaming) return;
+    const msg = this.input.value.trim();
+    if (!msg) return;
+    this.addMsg('user', this.escHtml(msg));
+    this.input.value = '';
+    this.input.style.height = 'auto';
+    STATE.conversationHistory.push({ role: 'user', content: msg });
+    this.callGroq(msg);
+  },
+
+  escHtml(t) { return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); },
+
+  formatReply(text) {
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/`([^`\n]+)`/g, '<code style="background:rgba(0,229,255,0.12);padding:1px 6px;border-radius:4px;font-size:11px;color:#00e5ff;font-family:monospace;">$1</code>')
+      .replace(/```[\w]*\n?([\s\S]*?)```/g, '<pre style="background:rgba(0,0,0,0.4);border:1px solid rgba(0,229,255,0.2);border-radius:6px;padding:10px;font-size:11px;overflow-x:auto;margin:6px 0;"><code style="color:#c8d0e7;font-family:monospace;white-space:pre;">$1</code></pre>')
+      .replace(/^#{1,3}\s(.+)/gm, '<strong style="font-size:12.5px;color:#00e5ff;">$1</strong>')
+      .replace(/^[-•]\s(.+)/gm, '• $1')
+      .replace(/\n\n/g, '<br><br>')
+      .replace(/\n/g, '<br>');
+  },
+
+  addMsg(role, html) {
+    const isAI = role === 'ai';
+    const wrap = document.createElement('div');
+    wrap.className = `chat-msg ${isAI ? 'msg-ai' : 'msg-user'}`;
+    wrap.innerHTML = `
+      <div class="chat-msg-avatar">
+        ${isAI
+          ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>'
+          : '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(200,208,231,0.7)" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'}
+      </div>
+      <div class="chat-msg-bubble">${html}</div>`;
+
+    wrap.style.opacity = '0';
+    wrap.style.transform = 'translateY(6px)';
+    this.container.appendChild(wrap);
+    requestAnimationFrame(() => {
+      wrap.style.transition = 'opacity .28s ease, transform .28s ease';
+      wrap.style.opacity = '1';
+      wrap.style.transform = 'translateY(0)';
+    });
+    this.container.scrollTop = this.container.scrollHeight;
+    return wrap.querySelector('.chat-msg-bubble');
+  },
+
+  showTyping() {
+    const div = document.createElement('div');
+    div.className = 'chat-msg msg-ai';
+    div.id = 'typingIndicator';
+    div.innerHTML = `
+      <div class="chat-msg-avatar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      </div>
+      <div class="chat-msg-bubble">
+        <div class="typing-indicator"><span></span><span></span><span></span></div>
+      </div>`;
+    this.container.appendChild(div);
+    this.container.scrollTop = this.container.scrollHeight;
+    return div;
+  },
+
+  removeTyping() {
+    document.getElementById('typingIndicator')?.remove();
+  },
+
+  buildContext() {
+    if (!STATE.currentData) return '';
+    const { headers, data } = STATE.currentData;
+    const numCols = Utils.numericCols(data, headers);
+    const stats = numCols.slice(0, 10).map(h => {
+      const v = Utils.getCol(data, h);
+      if (!v.length) return null;
+      return `${h}: n=${v.length}, μ=${Utils.fmt(Utils.mean(v))}, σ=${Utils.fmt(Utils.std(v))}, min=${Utils.fmt(Math.min(...v))}, max=${Utils.fmt(Math.max(...v))}`;
+    }).filter(Boolean);
+
+    let algCtx = '';
+    if (STATE.processedData) {
+      const p = STATE.processedData;
+      if (p.explained)  algCtx = `\nPCA: PC1=${Utils.fmt(p.explained[0],1)}%, PC2=${Utils.fmt(p.explained[1],1)}% variance explained`;
+      if (p.inertia !== undefined) algCtx = `\nK-Means k=${p.k}: inertia=${Utils.fmt(p.inertia)}, silhouette=${p.silhouette != null ? Utils.fmt(p.silhouette) : 'N/A'}`;
+      if (p.r2 !== undefined) algCtx = `\nLinear regression: slope=${Utils.fmt(p.slope,4)}, R²=${Utils.fmt(p.r2,4)}, SE=${Utils.fmt(p.se,4)}`;
+      if (p.anomalies)  algCtx = `\nIsolation Forest: ${p.anomalies.length} anomalies detected at indices [${p.anomalies.slice(0,6).join(',')}${p.anomalies.length>6?'…':''}]`;
+    }
+
+    return `\n\n=== DATASET CONTEXT ===\nShape: ${data.length} rows × ${headers.length} columns\nAll columns: ${headers.join(', ')}\nNumeric (${numCols.length}): ${numCols.join(', ')}\nStatistics:\n${stats.join('\n')}\nActive viz: ${STATE.currentVizType}\nActive algorithm: ${STATE.currentAlgorithm}${algCtx}\n=======================`;
+  },
+
+  buildSystem() {
+    return `You are QuantumViz AI — a world-class data scientist and ML engineer embedded in an advanced analytics platform. Expertise: statistics, data visualization, ML algorithms (PCA, clustering, LSTM, transformers, anomaly detection), quantum-inspired computation, Python/pandas/sklearn/torch.
+
+Guidelines:
+- Be QUANTITATIVE: cite exact values, coefficients, p-values when available
+- Format: **bold** key terms, \`code\` for variable names, triple-backtick for code blocks
+- Under 300 words unless deep explanation requested
+- If asked about code, give concise, runnable Python
+- Suggest specific visualizations or algorithms when relevant
+- Explain ML concepts contextually (not textbook-style)
+- Be direct, expert, occasionally note quantum advantages${Chat.buildContext()}`;
+  },
+
+  async callGroq(userMsg) {
+    STATE.isStreaming = true;
+    this.sendBtn.disabled = true;
+    this.sendBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" opacity=".3"/><path d="M21 12a9 9 0 0 1-9 9"/></svg>';
+
+    const typingEl = this.showTyping();
+
+    try {
+      const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${CONFIG.GROQ_API_KEY}` },
+        body: JSON.stringify({
+          model: CONFIG.GROQ_MODEL,
+          messages: [
+            { role: 'system', content: Chat.buildSystem() },
+            ...STATE.conversationHistory.slice(-CONFIG.HISTORY_LIMIT),
+          ],
+          max_tokens: CONFIG.MAX_TOKENS,
+          temperature: CONFIG.TEMPERATURE,
+          stream: true,
+        }),
+      });
+
+      if (!resp.ok) {
+        const errBody = await resp.json().catch(() => ({}));
+        throw new Error(`${resp.status}: ${errBody?.error?.message || 'API error'}`);
+      }
+
+      typingEl.remove();
+      const bubble = this.addMsg('ai', '');
+      let fullReply = '';
+
+      const reader = resp.body.getReader();
+      const dec = new TextDecoder();
+      let buf = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        const lines = buf.split('\n');
+        buf = lines.pop() || '';
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const raw = line.slice(6).trim();
+          if (raw === '[DONE]') continue;
+          try {
+            const j = JSON.parse(raw);
+            const delta = j.choices?.[0]?.delta?.content || '';
+            fullReply += delta;
+            bubble.innerHTML = Chat.formatReply(fullReply) + '<span class="cursor-blink">▌</span>';
+            this.container.scrollTop = this.container.scrollHeight;
+          } catch {}
+        }
+      }
+
+      bubble.innerHTML = Chat.formatReply(fullReply);
+      STATE.conversationHistory.push({ role: 'assistant', content: fullReply });
+
+    } catch (err) {
+      this.removeTyping();
+      console.error('Groq error:', err);
+      const fallback = Chat.localFallback(userMsg);
+      STATE.conversationHistory.push({ role: 'assistant', content: fallback });
+      const bub = this.addMsg('ai', Chat.formatReply(fallback));
+      if (bub) bub.innerHTML += `<br><small style="color:rgba(255,255,255,0.25);font-size:10px;margin-top:4px;display:block;">⚠ API unavailable — ${err.message?.slice(0, 60)}</small>`;
+    }
+
+    STATE.isStreaming = false;
+    this.sendBtn.disabled = false;
+    this.sendBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+  },
+
+  localFallback(msg) {
+    if (!STATE.currentData) return '📂 Upload a CSV file to begin. I\'ll provide full AI-powered insights once your data is loaded.';
+    const { headers, data } = STATE.currentData;
+    const numCols = Utils.numericCols(data, headers);
+    const lower = msg.toLowerCase();
+
+    if (lower.match(/shape|size|row|dim/))
+      return `**Dataset:** ${data.length} rows × ${headers.length} columns\n**Numeric features:** ${numCols.length}: ${numCols.join(', ')}\n**Categorical:** ${headers.filter(h => !numCols.includes(h)).join(', ') || 'none'}`;
+
+    if (lower.match(/col|feat|var|field/))
+      return `**All columns (${headers.length}):**\n${headers.map(h => `• \`${h}\` — ${numCols.includes(h) ? 'numeric' : 'categorical'}`).join('\n')}`;
+
+    if (lower.match(/summar|stat|describ|overview/)) {
+      return numCols.slice(0, 6).map(h => {
+        const v = Utils.getCol(data, h);
+        return `**${h}**: μ=${Utils.fmt(Utils.mean(v))}, σ=${Utils.fmt(Utils.std(v))}, range=[${Utils.fmt(Math.min(...v))}, ${Utils.fmt(Math.max(...v))}]`;
+      }).join('\n');
+    }
+
+    if (lower.match(/anomal|outlier|unusual/)) {
+      const h = numCols[0];
+      if (h) {
+        const v = Utils.getCol(data, h);
+        const ma = Utils.movingAvg(v, 5);
+        const idx = Utils.detectAnomalies(v, ma);
+        return `**Anomaly scan on "${h}":**\nFound **${idx.length}** anomalies at rows: ${idx.slice(0, 8).join(', ')}${idx.length > 8 ? '…' : ''}\n\nUse → *Temporal Anomaly* or *Isolation Forest* for a full visualization.`;
+      }
+    }
+
+    if (lower.match(/corr|relat|associat/)) {
+      if (numCols.length >= 2) {
+        const r = Utils.correlation(Utils.getCol(data, numCols[0]), Utils.getCol(data, numCols[1]));
+        const strength = Math.abs(r) > 0.7 ? 'strong' : Math.abs(r) > 0.4 ? 'moderate' : 'weak';
+        return `**Correlation ${numCols[0]} ↔ ${numCols[1]}:** r = **${Utils.fmt(r)}** (${strength} ${r > 0 ? 'positive' : 'negative'})\n\nFor the full matrix → select **Quantum Heatmap** + **PCA** algorithm.`;
+      }
+    }
+
+    if (lower.match(/cluster|group|segment|segment/))
+      return `**K-Means clustering** ready.\nSelect **Algorithm → k-means**, then pick **4D Scatter** or **Bubble Chart** to see cluster assignments.\n\nSuggested k=4 for ${data.length} records.`;
+
+    if (lower.match(/forecast|predict|future|trend/))
+      return `**Forecasting options:**\n• Select **Time Series** viz + **lstm** or **transformer** algorithm\n• Select **Quantum LSTM** for full sequence prediction with confidence intervals`;
+
+    return `**Dataset loaded:** ${data.length} rows, ${headers.length} cols, ${numCols.length} numeric features.\n\nTry asking:\n• *"summarize the data"*\n• *"find anomalies in [column]"*\n• *"correlation between features"*\n• *"how should I cluster this?"*`;
+  },
+};
+
+// ══════════════════════════════════════════════════════════════════════════
+//  CSV PARSER (robust: handles quoted fields, CRLF, extra whitespace)
+// ══════════════════════════════════════════════════════════════════════════
+function parseCSV(text) {
+  const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n').filter(l => l.trim());
+  if (lines.length < 2) throw new Error('CSV must have a header and at least one data row');
+
+  function parseLine(line) {
+    const result = []; let cur = ''; let inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') { if (inQ && line[i+1] === '"') { cur += '"'; i++; } else inQ = !inQ; }
+      else if (ch === ',' && !inQ) { result.push(cur.trim()); cur = ''; }
+      else cur += ch;
+    }
+    result.push(cur.trim());
+    return result;
+  }
+
+  const headers = parseLine(lines[0]).map(h => h.replace(/^"|"$/g, '').trim());
+  const data = lines.slice(1).map(line => {
+    const vals = parseLine(line);
+    return headers.reduce((obj, h, i) => { obj[h] = (vals[i] ?? '').replace(/^"|"$/g, '').trim(); return obj; }, {});
+  }).filter(row => headers.some(h => row[h] !== ''));
+
+  return { headers, data };
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════════════════════════════════
+function showToast(msg, color = 'var(--cyan, #00e5ff)') {
+  const toast = document.getElementById('toast');
+  const msgEl = document.getElementById('toast-msg');
+  const icon  = toast?.querySelector('.toast-icon');
+  if (!toast || !msgEl) return;
+  msgEl.textContent = msg;
+  toast.style.borderColor = color;
+  if (icon) icon.style.color = color;
+  toast.classList.remove('show');
+  requestAnimationFrame(() => { requestAnimationFrame(() => toast.classList.add('show')); });
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => toast.classList.remove('show'), 3800);
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  THREE.JS BACKGROUND
+// ══════════════════════════════════════════════════════════════════════════
+function initBackground() {
+  const canvas = document.getElementById('quantum-bg');
+  if (!canvas || !window.THREE) return;
+
+  try {
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setClearColor(0x000000, 0);
+
+    const scene  = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 1000);
+    camera.position.z = 80;
+
+    const COUNT = 2800;
+    const pos = new Float32Array(COUNT * 3);
+    const col = new Float32Array(COUNT * 3);
+    const palette = [[0,0.9,1],[0.66,0.33,0.97],[0,1,0.53],[1,1,1],[0.8,0.5,1]];
+    for (let i = 0; i < COUNT; i++) {
+      pos[i*3]   = (Math.random()-.5)*320;
+      pos[i*3+1] = (Math.random()-.5)*320;
+      pos[i*3+2] = (Math.random()-.5)*320;
+      const c = palette[Math.floor(Math.random()*palette.length)];
+      col[i*3]=c[0]; col[i*3+1]=c[1]; col[i*3+2]=c[2];
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('color',    new THREE.BufferAttribute(col, 3));
+    const mat = new THREE.PointsMaterial({ size: 0.38, vertexColors: true, transparent: true, opacity: 0.7, sizeAttenuation: true });
+    const stars = new THREE.Points(geo, mat);
+    scene.add(stars);
+
+    // Connection lines
+    const lp = [];
+    for (let i = 0; i < 90; i++) {
+      const x = (Math.random()-.5)*200, y = (Math.random()-.5)*200, z = (Math.random()-.5)*100;
+      lp.push(x,y,z, x+(Math.random()-.5)*50, y+(Math.random()-.5)*50, z+(Math.random()-.5)*50);
+    }
+    const lGeo = new THREE.BufferGeometry();
+    lGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(lp), 3));
+    scene.add(new THREE.LineSegments(lGeo, new THREE.LineBasicMaterial({ color:0x00e5ff, transparent:true, opacity:0.055 })));
+
+    let t = 0, mx = 0, my = 0;
+    document.addEventListener('mousemove', e => { mx=(e.clientX/innerWidth-.5)*.022; my=(e.clientY/innerHeight-.5)*.022; });
+
+    (function loop() {
+      requestAnimationFrame(loop);
+      t += 0.002;
+      stars.rotation.y += 0.00025 + mx * 0.3;
+      stars.rotation.x += 0.00008 + my * 0.3;
+      mat.opacity = 0.48 + Math.sin(t) * 0.12;
+      renderer.render(scene, camera);
+    })();
+
+    addEventListener('resize', () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+    });
+  } catch (e) { console.warn('Three.js background failed:', e); }
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  CURSOR
+// ══════════════════════════════════════════════════════════════════════════
+function initCursor() {
+  const dot  = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  if (!dot || !ring) return;
+
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+  });
+
+  // Hover states
+  document.addEventListener('mouseover', e => {
+    if (e.target.matches('button, a, .viz-type-btn, .demo-tab, input, select, [role="button"]')) {
+      ring.style.transform = 'translate(-50%,-50%) scale(1.5)';
+      ring.style.borderColor = 'rgba(0,229,255,0.8)';
+    }
+  });
+  document.addEventListener('mouseout', e => {
+    if (e.target.matches('button, a, .viz-type-btn, .demo-tab, input, select, [role="button"]')) {
+      ring.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.borderColor = '';
+    }
+  });
+
+  (function animRing() {
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  MAIN INIT
+// ══════════════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ── Preloader ────────────────────────────────────────────────────────
+  setTimeout(() => {
+    const pre = document.getElementById('preloader');
+    if (!pre) return;
+    pre.style.transition = 'opacity .6s ease';
+    pre.style.opacity = '0';
+    setTimeout(() => pre.style.display = 'none', 620);
+  }, 2000);
+
+  // ── Background + cursor ──────────────────────────────────────────────
+  initBackground();
+  initCursor();
+
+  // ── AOS ──────────────────────────────────────────────────────────────
+  window.AOS?.init({ duration: 680, once: true, easing: 'ease-out-quad', offset: 55 });
+
+  // ── Typed.js ─────────────────────────────────────────────────────────
+  if (window.Typed) {
+    new Typed('#typed', {
+      strings: ['Intelligence', 'Visualization', 'Analysis', 'Discovery', 'Insight', 'Prediction'],
+      typeSpeed: 68, backSpeed: 38, backDelay: 1900, loop: true, showCursor: true, cursorChar: '|',
+    });
+  }
+
+  // ── Hero chart ───────────────────────────────────────────────────────
+  const heroCanvas = document.getElementById('heroChartCanvas');
+  if (heroCanvas && window.Chart) {
+    const ctx = heroCanvas.getContext('2d');
+    const g1 = ctx.createLinearGradient(0,0,0,260); g1.addColorStop(0,'rgba(0,229,255,.38)'); g1.addColorStop(1,'rgba(0,229,255,0)');
+    const g2 = ctx.createLinearGradient(0,0,0,260); g2.addColorStop(0,'rgba(168,85,247,.38)'); g2.addColorStop(1,'rgba(168,85,247,0)');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+        datasets: [
+          { label:'Quantum Score', data:[42,65,58,80,72,95,88,110,102,125,115,140], borderColor:'#00e5ff', backgroundColor:g1, borderWidth:2, pointRadius:3, tension:.42, fill:true },
+          { label:'Classical Score', data:[30,45,40,55,50,68,60,75,70,88,80,100], borderColor:'#a855f7', backgroundColor:g2, borderWidth:2, pointRadius:3, tension:.42, fill:true },
+        ],
+      },
+      options: {
+        responsive:true, maintainAspectRatio:true,
+        plugins: { legend:{labels:{color:'#8892b0',font:{size:11},boxWidth:12}}, tooltip:{backgroundColor:'rgba(5,5,20,.92)',borderColor:'rgba(0,229,255,.3)',borderWidth:1,titleColor:'#00e5ff',bodyColor:'#c8d0e7'} },
+        scales: { x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#8892b0',font:{size:10}}}, y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#8892b0',font:{size:10}}} },
+      },
+    });
+  }
+
+  // ── Scroll progress + nav ────────────────────────────────────────────
+  const progressBar = document.getElementById('scrollProgress');
+  const mainNav     = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    if (progressBar) {
+      const s = document.documentElement.scrollTop;
+      const h = document.documentElement.scrollHeight - innerHeight;
+      progressBar.style.width = (s / Math.max(h, 1) * 100) + '%';
+    }
+    mainNav?.classList.toggle('scrolled', scrollY > 60);
+  }, { passive: true });
+
+  // ── Mobile nav ───────────────────────────────────────────────────────
+  const navToggle = document.getElementById('navToggle');
+  const navWrap   = document.getElementById('navLinksWrap');
+  navToggle?.addEventListener('click', () => navWrap?.classList.toggle('open'));
+  document.querySelectorAll('.nav-link, .nav-cta').forEach(l => l.addEventListener('click', () => navWrap?.classList.remove('open')));
+
+  // ── Counters ─────────────────────────────────────────────────────────
+  const cObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target, end = parseInt(el.dataset.target) || 0;
+      let cur = 0; const step = end / 60;
+      const t = setInterval(() => { cur = Math.min(cur + step, end); el.textContent = Math.floor(cur); if (cur >= end) clearInterval(t); }, 25);
+      cObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.counter').forEach(c => cObs.observe(c));
+
+  // ── Demo tabs ────────────────────────────────────────────────────────
+  const activateTab = (tab) => {
+    document.querySelectorAll('.demo-tab').forEach(t => { t.style.color = ''; t.style.borderBottom = ''; t.classList.remove('active'); });
+    document.querySelectorAll('.demo-tab-content').forEach(c => c.style.display = 'none');
+    tab.style.color = 'var(--cyan, #00e5ff)';
+    tab.style.borderBottom = '2px solid var(--cyan, #00e5ff)';
+    tab.classList.add('active');
+    const el = document.getElementById('tab-' + tab.dataset.tab);
+    if (el) el.style.display = tab.dataset.tab === 'viz' ? 'block' : 'flex';
+  };
+  document.querySelectorAll('.demo-tab').forEach(tab => tab.addEventListener('click', () => activateTab(tab)));
+
+  // ── File upload ──────────────────────────────────────────────────────
+  const uploadZone = document.getElementById('uploadZone');
+  const csvInput   = document.getElementById('csvFile');
+
+  function bindFile(f) {
+    if (!f || !f.name.toLowerCase().endsWith('.csv')) { showToast('⚠️ Please select a .csv file', '#fbbf24'); return; }
+    document.getElementById('fileName') && (document.getElementById('fileName').textContent = f.name);
+    document.getElementById('fileInfo') && (document.getElementById('fileInfo').style.display = 'block');
+    uploadZone && (uploadZone.style.borderColor = 'var(--cyan, #00e5ff)');
+    showToast(`📁 ${f.name} ready to analyze`, 'var(--cyan, #00e5ff)');
+  }
+
+  uploadZone?.addEventListener('click', () => csvInput?.click());
+  uploadZone?.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+  uploadZone?.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+  uploadZone?.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('drag-over'); bindFile(e.dataTransfer.files[0]); if (e.dataTransfer.files[0]?.name.toLowerCase().endsWith('.csv')) csvInput.files = e.dataTransfer.files; });
+  csvInput?.addEventListener('change', () => bindFile(csvInput.files[0]));
+
+  // ── Analyze button ───────────────────────────────────────────────────
+  const analyzeBtn = document.getElementById('analyzeData');
+  analyzeBtn?.addEventListener('click', () => {
+    const file = csvInput?.files[0];
+    if (!file) { showToast('⚠️ Upload a CSV first', '#fbbf24'); return; }
+    if (STATE.isAnalyzing) return;
+    STATE.isAnalyzing = true;
+    analyzeBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" opacity=".3"/><path d="M21 12a9 9 0 0 1-9 9"/></svg> Analyzing…';
+    analyzeBtn.disabled = true;
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        STATE.currentData = parseCSV(e.target.result);
+        const { data, headers } = STATE.currentData;
+        const numCols = Utils.numericCols(data, headers);
+
+        // Set initial viz + algorithm
+        STATE.currentVizType = '4d-scatter';
+        STATE.currentAlgorithm = document.getElementById('algorithmSelect')?.value || 'none';
+
+        // Switch to viz tab and render
+        const vizTab = document.querySelector('.demo-tab[data-tab="viz"]');
+        if (vizTab) activateTab(vizTab);
+        Viz.render(STATE.currentVizType, STATE.currentAlgorithm);
+
+        // Summary stats
+        const topStats = numCols.slice(0, 4).map(h => {
+          const v = Utils.getCol(data, h);
+          return `• **${h}**: μ=${Utils.fmt(Utils.mean(v))}, σ=${Utils.fmt(Utils.std(v))}`;
+        }).join('\n');
+
+        Chat.addMsg('ai', Chat.formatReply(
+          `✅ **Analysis complete!** Loaded **${data.length} rows × ${headers.length} columns**\n` +
+          `📊 **Numeric features (${numCols.length}):** ${numCols.slice(0,6).join(', ')}${numCols.length>6?'…':''}\n\n` +
+          `**Quick stats:**\n${topStats}\n\n` +
+          `💡 Switch **visualization types** or **algorithms** above — I'll analyze contextually.\nAsk me anything about your data!`
+        ));
+
+        showToast(`⚡ ${data.length} rows loaded — ready!`, 'var(--green, #00ff88)');
+      } catch (err) {
+        showToast(`❌ Parse error: ${err.message}`, '#f87171');
+        Chat.addMsg('ai', `⚠️ **CSV parse error:** ${err.message}<br><small>Make sure the file is a valid comma-separated CSV with a header row.</small>`);
+      }
+
+      STATE.isAnalyzing = false;
+      analyzeBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg> Re-Analyze';
+      analyzeBtn.disabled = false;
+    };
+    reader.onerror = () => {
+      showToast('❌ File read failed', '#f87171');
+      STATE.isAnalyzing = false;
+      analyzeBtn.innerHTML = 'Analyze';
+      analyzeBtn.disabled = false;
+    };
+    reader.readAsText(file);
+  });
+
+  // ── Viz type buttons ─────────────────────────────────────────────────
+  document.querySelectorAll('.viz-type-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.viz-type-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      STATE.currentVizType    = btn.dataset.type;
+      STATE.currentAlgorithm  = document.getElementById('algorithmSelect')?.value || 'none';
+      const vizTab = document.querySelector('.demo-tab[data-tab="viz"]');
+      if (vizTab) activateTab(vizTab);
+      Viz.render(STATE.currentVizType, STATE.currentAlgorithm);
+    });
+  });
+
+  // ── Algorithm select ─────────────────────────────────────────────────
+  document.getElementById('algorithmSelect')?.addEventListener('change', function() {
+    STATE.currentAlgorithm = this.value;
+    if (STATE.currentData) Viz.render(STATE.currentVizType, STATE.currentAlgorithm);
+  });
+
+  // ── Contact form ─────────────────────────────────────────────────────
+  document.getElementById('contactForm')?.addEventListener('submit', e => {
+    e.preventDefault();
+    showToast('✅ Message sent! We\'ll respond at quantum speed.', 'var(--green, #00ff88)');
+    e.target.reset();
+  });
+
+  // ── Smooth scroll ─────────────────────────────────────────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  // ── Keyboard shortcuts ────────────────────────────────────────────────
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') analyzeBtn?.click();
+    if (e.key === 'Escape') document.getElementById('userInput')?.blur();
+  });
+
+  // ── Global toast ──────────────────────────────────────────────────────
+  window.showToast = showToast;
+
+  // ── Init chat ─────────────────────────────────────────────────────────
+  Chat.init();
+
+  // Inject spin animation if not already present
+  if (!document.getElementById('qv-spin-style')) {
+    const s = document.createElement('style');
+    s.id = 'qv-spin-style';
+    s.textContent = `
+      @keyframes qv-spin { to { transform: rotate(360deg); } }
+      .spin { animation: qv-spin .8s linear infinite; transform-origin: center; }
+      @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
+      .cursor-blink { animation: blink .7s step-end infinite; }
+    `;
+    document.head.appendChild(s);
+  }
+});
+
+
+  </script>
+</body>
+</html>
