@@ -5,15 +5,6 @@
   <img src="Screenshot 2026-06-06 213648.png" alt="QuantumViz AI — Live Platform" width="100%" style="border-radius:12px;" />
 </a>
 
-<br/><br/>
-
-<!-- ─── ANIMATED TITLE ────────────────────────────────────── -->
-<img src="Recording 2026-06-05 204631 (1).mp4" alt="QuantumViz AI" />
-
-<br/>
-
-
-
 <!-- ─── BADGES ROW 2 — TECH ────────────────────────────────── -->
 ![JS](https://img.shields.io/badge/JavaScript-ES2022-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 ![Groq](https://img.shields.io/badge/Groq_LPU-llama--3.3--70b-FF6B35?style=flat-square&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPBAMAAAALBU5jAAAAD1BMVEUAAAAAAAAAAAAAAAAAAAAuMqRsAAAABHRSTlMAAQIDk6OZQAAAA)
