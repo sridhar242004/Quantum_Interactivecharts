@@ -1,8 +1,7 @@
 
-<!-- ============================================================
      QUANTUMVIZ AI — WORLD-CLASS GITHUB README
      Live site: https://quantuminteractivecharts.netlify.app/
-     ============================================================ -->
+    
 
 <div align="center">
 
@@ -95,21 +94,7 @@
 
 ## 🎬 Demo Video
 
-> **📌 Add your video here** — drag your `.mp4` into a GitHub Issue text box, copy the generated CDN URL, then paste below and delete this instruction line.
-
-```
-https://github.com/YOUR-USERNAME/quantumviz-ai/assets/YOUR-ID/YOUR_VIDEO_ASSET_ID.mp4
-```
-
-<!-- Once you have the URL, uncomment this block:
-https://github.com/YOUR-USERNAME/quantumviz-ai/assets/YOUR-ID/YOUR_VIDEO_ASSET_ID.mp4
--->
-
-**To embed your video on GitHub:**
-1. Open any Issue in your repo
-2. Drag & drop your `.mp4` into the comment box
-3. GitHub auto-uploads it and gives you a URL like `https://github.com/user/repo/assets/...`
-4. Paste that URL alone on its own line in this README (GitHub auto-embeds it)
+> 
 
 ---
 
