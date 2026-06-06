@@ -12,9 +12,7 @@
 
 <br/>
 
-<!-- ─── BADGES ROW 1 — STATUS ─────────────────────────────── -->
-[![Version](https://img.shields.io/badge/Version-v2.0.1_Quantum_Core-a855f7?style=for-the-badge&logo=semantic-release&logoColor=white)](https://github.com)
-[![License](https://img.shields.io/badge/License-MIT-00ff88?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
+
 
 <!-- ─── BADGES ROW 2 — TECH ────────────────────────────────── -->
 ![JS](https://img.shields.io/badge/JavaScript-ES2022-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
