@@ -786,5 +786,4 @@ chore(scope)     Tooling, CI, config
 <br/>
 
 </div>
-ENDOFREADME
-echo "Done — $(wc -l < /mnt/user-data/outputs/README.md) lines written"
+
