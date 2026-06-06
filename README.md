@@ -8,7 +8,7 @@
 <br/><br/>
 
 <!-- ─── ANIMATED TITLE ────────────────────────────────────── -->
-<img src="https://readme-typing-svg.demolab.com?font=Exo+2&weight=900&size=36&duration=2800&pause=1200&color=00E5FF&center=true&vCenter=true&width=720&lines=⚡+QuantumViz+AI;Quantum-Powered+Data+Intelligence;15+Algorithms+%7C+12+Viz+Types+%7C+Real+AI;Zero+Backend+%C2%B7+100%25+Client-Side" alt="QuantumViz AI" />
+<img src="Recording 2026-06-05 204631 (1).mp4" alt="QuantumViz AI" />
 
 <br/>
 
