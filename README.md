@@ -1,7 +1,7 @@
 <div align="center">
 
 <!-- ─── LIVE SCREENSHOT ─────────────────────────────────── -->
-<a href="https://quantuminteractivecharts.netlify.app/" target="_blank">
+<a href="Recording 2026-06-05 204631 (1).mp4" target="_blank">
   <img src="Screenshot 2026-06-06 213648.png" alt="QuantumViz AI — Live Platform" width="100%" style="border-radius:12px;" />
 </a>
 
@@ -13,7 +13,6 @@
 <br/>
 
 <!-- ─── BADGES ROW 1 — STATUS ─────────────────────────────── -->
-[![Live](Recording 2026-06-05 204631 (1).mp4)
 [![Version](https://img.shields.io/badge/Version-v2.0.1_Quantum_Core-a855f7?style=for-the-badge&logo=semantic-release&logoColor=white)](https://github.com)
 [![License](https://img.shields.io/badge/License-MIT-00ff88?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
 
