@@ -1,13 +1,8 @@
-
-     QUANTUMVIZ AI — WORLD-CLASS GITHUB README
-     Live site: https://quantuminteractivecharts.netlify.app/
-    
-
 <div align="center">
 
 <!-- ─── LIVE SCREENSHOT ─────────────────────────────────── -->
 <a href="https://quantuminteractivecharts.netlify.app/" target="_blank">
-  <img src="https://image.thum.io/get/width/1280/crop/760/noanimate/https://quantuminteractivecharts.netlify.app/" alt="QuantumViz AI — Live Platform" width="100%" style="border-radius:12px;" />
+  <img src="Screenshot 2026-06-06 213648.png" alt="QuantumViz AI — Live Platform" width="100%" style="border-radius:12px;" />
 </a>
 
 <br/><br/>
