@@ -1,4 +1,4 @@
-cat > /mnt/user-data/outputs/README.md << 'ENDOFREADME'
+
 <!-- ============================================================
      QUANTUMVIZ AI — WORLD-CLASS GITHUB README
      Live site: https://quantuminteractivecharts.netlify.app/
@@ -800,29 +800,6 @@ chore(scope)     Tooling, CI, config
 - [ ] **v2.5** — Export: PNG/SVG chart download + PDF report generation
 - [ ] **v3.0** — Plugin SDK: drop-in custom algorithm + viz bundles via ES modules
 
----
-
-## 📄 License
-
-```
-MIT License  ·  Copyright (c) 2025 QuantumViz AI
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-```
-
----
 
 <div align="center">
 
