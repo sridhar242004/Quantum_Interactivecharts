@@ -768,11 +768,7 @@ chore(scope)     Tooling, CI, config
 
 **Built with ⚡ · Powered by [Groq LPU](https://groq.com) · Deployed on [vercel](https://vercel.com)**
 
-<br/>
 
-[![Live Demo](https://quantumviz-vercel.vercel.app/)
-
-<br/>
 
 *Drop a ⭐ if QuantumViz AI saved you from writing a backend*
 
