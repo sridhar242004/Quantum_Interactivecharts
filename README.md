@@ -86,7 +86,7 @@ Recording 2026-06-05 204631 (1).mp4
 ### 🏠 Hero — Landing Experience
 
 <a href="https://quantuminteractivecharts.netlify.app/">
-  <img src="https://image.thum.io/get/width/1280/crop/760/noanimate/https://quantuminteractivecharts.netlify.app/" alt="QuantumViz AI Hero Section" width="100%" />
+  <img src="src/chart.png" alt="QuantumViz AI Hero Section" width="100%" />
 </a>
 
 > *WebGL particle background · animated typed headline · live hero Chart.js gradient · floating AI status badges*
