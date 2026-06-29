@@ -108,7 +108,7 @@ Recording 2026-06-05 204631 (1).mp4
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="https://image.thum.io/get/width/640/crop/700/noanimate/https://quantuminteractivecharts.netlify.app/" alt="Demo Panel" width="100%"/>
+      <img src="src/csv.png" alt="Demo Panel" width="100%"/>
       <br/><sub><b>CSV Upload + Algorithm Selector + 12 Viz Types</b></sub>
     </td>
     <td align="center" width="50%">
