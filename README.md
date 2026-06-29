@@ -95,8 +95,8 @@ Recording 2026-06-05 204631 (1).mp4
 
 ### 🪐 Quantum Features — Orbital UI
 
-<a href="src/chart.png">
-  <img src="src/chart.png" alt="QuantumViz AI Features Section" width="100%" />
+<a href="src/circle.png">
+  <img src="src/circle.png" alt="QuantumViz AI Features Section" width="100%" />
 </a>
 
 > *6 feature cards orbiting a Lottie-animated nucleus — pure CSS `@keyframes`, no JS rotation required*
