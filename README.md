@@ -112,7 +112,7 @@ Recording 2026-06-05 204631 (1).mp4
       <br/><sub><b>CSV Upload + Algorithm Selector + 12 Viz Types</b></sub>
     </td>
     <td align="center" width="50%">
-      <img src="https://image.thum.io/get/width/640/crop/700/noanimate/https://quantuminteractivecharts.netlify.app/" alt="AI Chat Panel" width="100%"/>
+      <img src="src/ai.png" alt="AI Chat Panel" width="100%"/>
       <br/><sub><b>Streaming AI Analyst powered by Groq LPU</b></sub>
     </td>
   </tr>
