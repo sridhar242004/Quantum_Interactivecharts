@@ -399,9 +399,9 @@ open http://localhost:8080
 # VS Code: Install "Live Server" → right-click index.html → "Open with Live Server"
 ```
 
-### Option 3 — Deploy to Netlify (One Click)
+### Option 3 — Deploy to vercel (One Click)
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/YOUR-USERNAME/quantumviz-ai)
+[![Deploy to vercel ]
 
 ### Option 4 — Docker
 
