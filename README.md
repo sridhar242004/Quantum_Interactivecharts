@@ -74,13 +74,6 @@
 | 🚀 **Deployment** | Netlify CDN — globally distributed, instant load |
 
 ---
-
-## 🎬 Demo Video
-
-> 
-Recording 2026-06-05 204631 (1).mp4
----
-
 ## 📸 Screenshots
 
 ### 🏠 Hero — Landing Experience
