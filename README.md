@@ -95,7 +95,7 @@ Recording 2026-06-05 204631 (1).mp4
 
 ### 🪐 Quantum Features — Orbital UI
 
-<a href="https://quantuminteractivecharts.netlify.app/#features">
+<a href="src/hero.png">
   <img src="src/hero.png" alt="QuantumViz AI Features Section" width="100%" />
 </a>
 
