@@ -96,7 +96,7 @@ Recording 2026-06-05 204631 (1).mp4
 ### 🪐 Quantum Features — Orbital UI
 
 <a href="https://quantuminteractivecharts.netlify.app/#features">
-  <img src="https://image.thum.io/get/width/1280/crop/960/noanimate/https://quantuminteractivecharts.netlify.app/" alt="QuantumViz AI Features Section" width="100%" />
+  <img src="src/hero.png" alt="QuantumViz AI Features Section" width="100%" />
 </a>
 
 > *6 feature cards orbiting a Lottie-animated nucleus — pure CSS `@keyframes`, no JS rotation required*
