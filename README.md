@@ -766,11 +766,11 @@ chore(scope)     Tooling, CI, config
 
 <br/>
 
-**Built with ⚡ · Powered by [Groq LPU](https://groq.com) · Deployed on [Netlify](https://netlify.com)**
+**Built with ⚡ · Powered by [Groq LPU](https://groq.com) · Deployed on [vercel](https://vercel.com)**
 
 <br/>
 
-[![Live Demo](https://img.shields.io/badge/🚀_Try_It_Live-quantuminteractivecharts.netlify.app-00e5ff?style=for-the-badge)](https://quantuminteractivecharts.netlify.app/)
+[![Live Demo](https://quantumviz-vercel.vercel.app/)
 
 <br/>
 
